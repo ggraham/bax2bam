@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
     readModeGroup.add_option("--ccs")
                  .dest(Settings::Option::ccsMode_)
                  .action("store_true")
-                 .help("Output CCS sequences");
+                 .help("Output CCS sequences (requires ccs.h5 input)");
     parser.add_option_group(readModeGroup);
 
     auto featureGroup = optparse::OptionGroup(parser, "Pulse feature options");
