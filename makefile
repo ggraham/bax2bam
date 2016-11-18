@@ -4,6 +4,9 @@ SRCDIR:=$(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 include ${CURDIR}/../../defines.mk
 include ${SRCDIR}/../../rules.mk
 
+# If pbbam and htslib are prebuilt and included in blasr/defines.mk,
+# set PacBioBAM_INCLUDE_DIRS, HTSLIB_INCLUDE_DIRS, PacBioBAM_LIBRARIES
+# and HTSLIB_LIBRARIES as below. Otherwise, just set PacBioBAM_RootDir instead.
 all: ${CURDIR}/src/* ${CURDIR}/tests/src/*
 	@mkdir -p ${CURDIR}/build && \
 	 cd ${CURDIR}/build && \
@@ -24,6 +27,7 @@ all: ${CURDIR}/src/* ${CURDIR}/tests/src/*
           -DBax2Bam_EXE_LINKER_FLAGS="-Wl,--no-as-needed -ldl -pthread -lrt " \
           ../ && \
 		make
+
 
 clean:
 	@rm -rf ${CURDIR}/bin/

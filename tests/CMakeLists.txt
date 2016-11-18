@@ -69,6 +69,7 @@ endif()
 target_link_libraries(test_bax2bam
     gtest
     gtest_main
+    ${PBBAM_LINK_FLAG}
     ${BLASR_LIBRARIES}
     ${PBIHDF_LIBRARIES}
     ${PBDATA_LIBRARIES} 

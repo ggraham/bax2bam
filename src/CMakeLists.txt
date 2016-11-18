@@ -45,6 +45,7 @@ if (NOT APPLE)
 else()
 endif()
 target_link_libraries(bax2bam 
+    ${PBBAM_LINK_FLAG}
     ${BLASR_LIBRARIES}
     ${PBIHDF_LIBRARIES}
     ${PBDATA_LIBRARIES} 
