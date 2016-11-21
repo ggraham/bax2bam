@@ -24,13 +24,6 @@ BamHeader IConverter::CreateHeader(const string& modeString)
 {
     BamHeader header;
 
-    // @HD VN:<current SAM/BAM spec version>
-    //     SO:unsorted
-    //     pb:<current PacBio BAM spec version>
-    header.Version("1.5")
-          .SortOrder("unknown")
-          .PacBioBamVersion("3.0.2");
-
     // @RG ID: <read group ID>
     //     DS: READTYPE=<HQREGION|POLYMERASE|SUBREAD>[;<Tag Manifest>;BINDINGKIT=<foo>;SEQUENCINGKIT=<bar>;BASECALLERVERSION=<42>]
     //     PL: PACBIO
