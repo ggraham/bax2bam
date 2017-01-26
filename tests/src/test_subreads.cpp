@@ -4,8 +4,8 @@
 #include "TestUtils.h"
 
 #include "HDFBasReader.hpp"
-#include "alignment/utils/RegionUtils.hpp"
-#include "hdf/HDFRegionTableReader.hpp"
+#include "utils/RegionUtils.hpp"
+#include "HDFRegionTableReader.hpp"
 #include <gtest/gtest.h>
 #include <pbbam/BamFile.h>
 #include <pbbam/BamRecord.h>
