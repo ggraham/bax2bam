@@ -1,8 +1,8 @@
 .PHONY=all
 
 SRCDIR:=$(dir $(realpath $(lastword $(MAKEFILE_LIST))))
-include ${CURDIR}/../../defines.mk
-include ${SRCDIR}/../../rules.mk
+include ${CURDIR}/defines.mk
+include ${SRCDIR}/rules.mk
 
 # If pbbam and htslib are prebuilt and included in blasr/defines.mk,
 # set PacBioBAM_INCLUDE_DIRS, HTSLIB_INCLUDE_DIRS, PacBioBAM_LIBRARIES
