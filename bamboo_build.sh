@@ -1,7 +1,8 @@
 #!/bin/bash -e
 rm -rf test-reports
 PBBAM=`/bin/ls -t tarballs/pbbam*tgz|head -1`
-HTSLIB=`/bin/ls -t tarballs/htslib*tgz|head -1`
+curl -s -L http://nexus/repository/maven-snapshots/pacbio/sat/htslib/htslib-1.1-SNAPSHOT.tgz -o tarballs/htslib-1.1-SNAPSHOT.tgz
+HTSLIB=`/bin/ls -t tarballs/htslib-*.tgz|head -1`
 BLASR_LIBCPP=`/bin/ls -t tarballs/blasr_libcpp*tgz|head -1`
 HAVE_HTSLIB=$PWD/prebuilts/`basename $HTSLIB .tgz`
 HAVE_BLASR_LIBCPP=$PWD/prebuilts/`basename $BLASR_LIBCPP .tgz`
