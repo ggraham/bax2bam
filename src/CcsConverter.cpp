@@ -11,7 +11,6 @@
 #include <pbbam/BamWriter.h>
 #include <algorithm>
 
-using namespace std;
 using namespace PacBio;
 using namespace PacBio::BAM;
 
@@ -83,8 +82,8 @@ void CcsConverter::AddRecordName(PacBio::BAM::BamRecordImpl* bamRecord,
                                  const int start,
                                  const int end)
 {
-    const string name = settings_.movieName + "/"
-                      + to_string(holeNumber) + "/ccs";
+    const std::string name = settings_.movieName + "/"
+                      + std::to_string(holeNumber) + "/ccs";
     bamRecord->Name(name);
 }
 
@@ -104,14 +103,14 @@ CcsConverter::HdfCcsReader* CcsConverter::InitHdfReader()
     return reader;
 }
 
-string CcsConverter::HeaderReadType(void) const
+std::string CcsConverter::HeaderReadType(void) const
 { return "CCS"; }
 
-string CcsConverter::ScrapsReadType(void) const
+std::string CcsConverter::ScrapsReadType(void) const
 { return "UNKNOWN"; }
 
-string CcsConverter::OutputFileSuffix(void) const
+std::string CcsConverter::OutputFileSuffix(void) const
 { return ".ccs.bam"; }
 
-string CcsConverter::ScrapsFileSuffix(void) const
+std::string CcsConverter::ScrapsFileSuffix(void) const
 { return ".empty.bam"; }

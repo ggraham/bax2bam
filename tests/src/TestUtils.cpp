@@ -6,38 +6,38 @@
 #include <gtest/gtest.h>
 #include <cstdio>
 #include <cstdlib>
-using namespace std;
+
 using namespace PacBio;
 using namespace PacBio::BAM;
 
-void RemoveFiles(const vector<string>& filenames)
+void RemoveFiles(const std::vector<std::string>& filenames)
 {
     for (auto fn : filenames)
         remove(fn.c_str());
 }
 
-void RemoveFile(const string& filename)
+void RemoveFile(const std::string& filename)
 {
-    vector<string> filenames;
+    std::vector<std::string> filenames;
     filenames.push_back(filename);
     RemoveFiles(filenames);
 }
 
-int RunBax2Bam(const vector<string>& baxFilenames,
-               const string& outputType,
-               const string& additionalArgs)
+int RunBax2Bam(const std::vector<std::string>& baxFilenames,
+               const std::string& outputType,
+               const std::string& additionalArgs)
 {
-    string convertArgs;
+    std::string convertArgs;
     convertArgs += outputType;
     if (!additionalArgs.empty()) {
-        convertArgs += string(" ");
+        convertArgs += std::string(" ");
         convertArgs += additionalArgs;
     }
     for (auto fn : baxFilenames) {
-        convertArgs += string(" ");
+        convertArgs += std::string(" ");
         convertArgs += fn;
     }
 
-    const string& convertCommandLine = tests::Bax2Bam_Exe + string(" ") + convertArgs;
+    const std::string& convertCommandLine = tests::Bax2Bam_Exe + std::string(" ") + convertArgs;
     return system(convertCommandLine.c_str());
 }

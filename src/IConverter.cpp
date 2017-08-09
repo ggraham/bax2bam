@@ -7,9 +7,9 @@
 #include <set>
 #include <cassert>
 #include <cmath>
+
 using namespace PacBio;
 using namespace PacBio::BAM;
-using namespace std;
 
 IConverter::IConverter(Settings& settings)
     : settings_(settings)
@@ -20,7 +20,7 @@ IConverter::~IConverter(void) { }
 void IConverter::AddErrorMessage(const std::string& e)
 { errors_.push_back(e); }
 
-BamHeader IConverter::CreateHeader(const string& modeString)
+BamHeader IConverter::CreateHeader(const std::string& modeString)
 {
     BamHeader header;
 

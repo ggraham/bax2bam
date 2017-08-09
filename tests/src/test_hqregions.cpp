@@ -15,20 +15,20 @@
 #include <vector>
 #include <cstdio>
 #include <cstdlib>
-using namespace std;
+
 using namespace PacBio;
 using namespace PacBio::BAM;
 
 TEST(HqRegionsTest, EndToEnd_Single)
 {
     // setup
-    const string movieName = "m140905_042212_sidney_c100564852550000001823085912221377_s1_X0";
+    const std::string movieName = "m140905_042212_sidney_c100564852550000001823085912221377_s1_X0";
 
-    vector<string> baxFilenames;
+    std::vector<std::string> baxFilenames;
     baxFilenames.push_back(tests::Data_Dir + "/data/" + movieName + ".1.bax.h5");
 
-    const string generatedBam = movieName + ".hqregions.bam";
-    const string scrapBam = movieName + ".lqregions.bam";
+    const std::string generatedBam = movieName + ".hqregions.bam";
+    const std::string scrapBam = movieName + ".lqregions.bam";
 
     // run conversion (manually disabling PW check... we can restore this later with a BAX that has both HQRegions & PW data)
     const int result = RunBax2Bam(baxFilenames, "--hqregion --pulsefeatures=\"DeletionQV,DeletionTag,InsertionQV,IPD,MergeQV,SubstitutionQV\"");
@@ -53,9 +53,9 @@ TEST(HqRegionsTest, EndToEnd_Single)
     baxReader.IncludeField("HQRegionSNR");
     // not using SubTag or PulseWidth 
 
-    string baxBasecallerVersion;
-    string baxBindingKit;
-    string baxSequencingKit;
+    std::string baxBasecallerVersion;
+    std::string baxBindingKit;
+    std::string baxSequencingKit;
 
     const int initOk = baxReader.Initialize(baxFilenames.front());
     EXPECT_EQ(1, initOk);
@@ -104,23 +104,23 @@ TEST(HqRegionsTest, EndToEnd_Single)
 
         // check BAM header information
         const BamHeader& header = bamFile.Header();
-        EXPECT_EQ(string(tests::Header_Version),     header.Version());
-        EXPECT_EQ(string("unknown"), header.SortOrder());
-        EXPECT_EQ(string(tests::PacBioBam_Version),   header.PacBioBamVersion());
+        EXPECT_EQ(std::string(tests::Header_Version),     header.Version());
+        EXPECT_EQ(std::string("unknown"), header.SortOrder());
+        EXPECT_EQ(std::string(tests::PacBioBam_Version),   header.PacBioBamVersion());
         EXPECT_TRUE(header.Sequences().empty());
         EXPECT_TRUE(header.Comments().empty());
         ASSERT_FALSE(header.Programs().empty());
 
-        const vector<string> readGroupIds = header.ReadGroupIds();
+        const std::vector<std::string> readGroupIds = header.ReadGroupIds();
         ASSERT_FALSE(readGroupIds.empty());
         const ReadGroupInfo& rg = header.ReadGroup(readGroupIds.front());
 
-        string rawId = movieName + "//HQREGION";
-        string md5Id;
+        std::string rawId = movieName + "//HQREGION";
+        std::string md5Id;
         MakeMD5(rawId, md5Id, 8);
         EXPECT_EQ(md5Id, rg.Id());
 
-        EXPECT_EQ(string("PACBIO"), rg.Platform());
+        EXPECT_EQ(std::string("PACBIO"), rg.Platform());
         EXPECT_EQ(movieName, rg.MovieName());
 
         EXPECT_TRUE(rg.SequencingCenter().empty());
@@ -156,7 +156,7 @@ TEST(HqRegionsTest, EndToEnd_Single)
                                                  hqScore);
         EXPECT_TRUE(lookupResult);
 
-        vector<float> hqSnr;
+        std::vector<float> hqSnr;
         hqSnr.push_back(baxRecord.HQRegionSnr('A'));
         hqSnr.push_back(baxRecord.HQRegionSnr('C'));
         hqSnr.push_back(baxRecord.HQRegionSnr('G'));
@@ -188,10 +188,10 @@ TEST(HqRegionsTest, EndToEnd_Single)
             const int subreadStart  = hqStart;
             const int subreadEnd    = hqEnd;
 
-            const string expectedName = movieName + "/" +
-                    to_string(holeNumber)   + "/" +
-                    to_string(subreadStart) + "_" +
-                    to_string(subreadEnd);
+            const std::string expectedName = movieName + "/" +
+                    std::to_string(holeNumber)   + "/" +
+                    std::to_string(subreadStart) + "_" +
+                    std::to_string(subreadEnd);
             EXPECT_EQ(expectedName, bamRecordImpl.Name());
 
             using PacBio::BAM::QualityValue;
@@ -199,10 +199,10 @@ TEST(HqRegionsTest, EndToEnd_Single)
 
             const DNALength length = subreadEnd - subreadStart;
 
-            string expectedSequence;
+            std::string expectedSequence;
             expectedSequence.assign((const char*)baxRecord.seq + subreadStart, length);
 
-            const string bamSequence = bamRecord.Sequence();
+            const std::string bamSequence = bamRecord.Sequence();
             const QualityValues bamQualities = bamRecord.Qualities();
             EXPECT_EQ(expectedSequence, bamSequence);
             EXPECT_TRUE(bamQualities.empty());
@@ -223,19 +223,19 @@ TEST(HqRegionsTest, EndToEnd_Single)
 
             if (baxRecord.deletionTag)
             {
-                string expectedDeletionTags;
+                std::string expectedDeletionTags;
                 expectedDeletionTags.assign((char*)baxRecord.deletionTag + subreadStart,
                                             (char*)baxRecord.deletionTag + subreadStart + length);
-                const string& bamDeletionTags = bamRecord.DeletionTag();
+                const std::string& bamDeletionTags = bamRecord.DeletionTag();
                 EXPECT_EQ(expectedDeletionTags, bamDeletionTags);
             }
 
             if (baxRecord.substitutionTag)
             {
-                string expectedSubstitutionTags;
+                std::string expectedSubstitutionTags;
                 expectedSubstitutionTags.assign((char*)baxRecord.substitutionTag + subreadStart,
                                             (char*)baxRecord.substitutionTag + subreadStart + length);
-                const string& bamSubstitutionTags = bamRecord.SubstitutionTag();
+                const std::string& bamSubstitutionTags = bamRecord.SubstitutionTag();
                 EXPECT_EQ(expectedSubstitutionTags, bamSubstitutionTags);
             }
 
@@ -262,22 +262,22 @@ TEST(HqRegionsTest, EndToEnd_Single)
         // check BAM header information
         const BamHeader& header = bamFile.Header();
         EXPECT_EQ(tests::Header_Version,     header.Version());
-        EXPECT_EQ(string("unknown"), header.SortOrder());
+        EXPECT_EQ(std::string("unknown"), header.SortOrder());
         EXPECT_EQ(tests::PacBioBam_Version,   header.PacBioBamVersion());
         EXPECT_TRUE(header.Sequences().empty());
         EXPECT_TRUE(header.Comments().empty());
         ASSERT_FALSE(header.Programs().empty());
 
-        const vector<string> readGroupIds = header.ReadGroupIds();
+        const std::vector<std::string> readGroupIds = header.ReadGroupIds();
         ASSERT_FALSE(readGroupIds.empty());
         const ReadGroupInfo& rg = header.ReadGroup(readGroupIds.front());
 
-        string rawId = movieName + "//SCRAP";
-        string md5Id;
+        std::string rawId = movieName + "//SCRAP";
+        std::string md5Id;
         MakeMD5(rawId, md5Id, 8);
         EXPECT_EQ(md5Id, rg.Id());
 
-        EXPECT_EQ(string("PACBIO"), rg.Platform());
+        EXPECT_EQ(std::string("PACBIO"), rg.Platform());
         EXPECT_EQ(movieName, rg.MovieName());
 
         EXPECT_TRUE(rg.SequencingCenter().empty());
@@ -313,7 +313,7 @@ TEST(HqRegionsTest, EndToEnd_Single)
                                                  hqScore);
         EXPECT_TRUE(lookupResult);
 
-        vector<float> hqSnr;
+        std::vector<float> hqSnr;
         hqSnr.push_back(baxRecord.HQRegionSnr('A'));
         hqSnr.push_back(baxRecord.HQRegionSnr('C'));
         hqSnr.push_back(baxRecord.HQRegionSnr('G'));
@@ -345,10 +345,10 @@ TEST(HqRegionsTest, EndToEnd_Single)
             const int subreadStart  = 0;
             const int subreadEnd    = hqStart;
 
-            const string expectedName = movieName + "/" +
-                    to_string(holeNumber)   + "/" +
-                    to_string(subreadStart) + "_" +
-                    to_string(subreadEnd);
+            const std::string expectedName = movieName + "/" +
+                    std::to_string(holeNumber)   + "/" +
+                    std::to_string(subreadStart) + "_" +
+                    std::to_string(subreadEnd);
             EXPECT_EQ(expectedName, bamRecordImpl.Name());
 
             using PacBio::BAM::QualityValue;
@@ -356,10 +356,10 @@ TEST(HqRegionsTest, EndToEnd_Single)
 
             const DNALength length = subreadEnd - subreadStart;
 
-            string expectedSequence;
+            std::string expectedSequence;
             expectedSequence.assign((const char*)baxRecord.seq + subreadStart, length);
 
-            const string bamSequence = bamRecord.Sequence();
+            const std::string bamSequence = bamRecord.Sequence();
             const QualityValues bamQualities = bamRecord.Qualities();
             EXPECT_EQ(expectedSequence, bamSequence);
             EXPECT_TRUE(bamQualities.empty());
@@ -380,19 +380,19 @@ TEST(HqRegionsTest, EndToEnd_Single)
 
             if (baxRecord.deletionTag)
             {
-                string expectedDeletionTags;
+                std::string expectedDeletionTags;
                 expectedDeletionTags.assign((char*)baxRecord.deletionTag + subreadStart,
                                             (char*)baxRecord.deletionTag + subreadStart + length);
-                const string& bamDeletionTags = bamRecord.DeletionTag();
+                const std::string& bamDeletionTags = bamRecord.DeletionTag();
                 EXPECT_EQ(expectedDeletionTags, bamDeletionTags);
             }
 
             if (baxRecord.substitutionTag)
             {
-                string expectedSubstitutionTags;
+                std::string expectedSubstitutionTags;
                 expectedSubstitutionTags.assign((char*)baxRecord.substitutionTag + subreadStart,
                                             (char*)baxRecord.substitutionTag + subreadStart + length);
-                const string& bamSubstitutionTags = bamRecord.SubstitutionTag();
+                const std::string& bamSubstitutionTags = bamRecord.SubstitutionTag();
                 EXPECT_EQ(expectedSubstitutionTags, bamSubstitutionTags);
             }
 

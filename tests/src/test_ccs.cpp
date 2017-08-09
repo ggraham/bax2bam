@@ -16,19 +16,18 @@
 #include <cstdlib>
 #include <algorithm>
 
-using namespace std;
 using namespace PacBio;
 using namespace PacBio::BAM;
 
 TEST(CcsTest, EndToEnd_Multiple)
 {
     // setup
-    const string movieName = "m131018_081703_42161_c100585152550000001823088404281404_s1_p0";
+    const std::string movieName = "m131018_081703_42161_c100585152550000001823088404281404_s1_p0";
 
-    vector<string> baxFilenames;
+    std::vector<std::string> baxFilenames;
     baxFilenames.push_back(tests::Data_Dir + "/data/" + movieName + ".1.ccs.h5");
 
-    const string generatedBam = movieName + ".ccs.bam";
+    const std::string generatedBam = movieName + ".ccs.bam";
 
     // run conversion
     const int result = RunBax2Bam(baxFilenames, "--ccs");
@@ -47,9 +46,9 @@ TEST(CcsTest, EndToEnd_Multiple)
     baxReader.IncludeField("InsertionQV");
     baxReader.IncludeField("SubstitutionQV");
 
-    string baxBasecallerVersion;
-    string baxBindingKit;
-    string baxSequencingKit;
+    std::string baxBasecallerVersion;
+    std::string baxBindingKit;
+    std::string baxSequencingKit;
 
     // set magic bits
     baxReader.SetReadBasesFromCCS();
@@ -102,22 +101,22 @@ TEST(CcsTest, EndToEnd_Multiple)
         // check BAM header information
         const BamHeader& header = bamFile.Header();
         EXPECT_EQ(tests::Header_Version,     header.Version());
-        EXPECT_EQ(string("unknown"), header.SortOrder());
+        EXPECT_EQ(std::string("unknown"), header.SortOrder());
         EXPECT_EQ(tests::PacBioBam_Version,   header.PacBioBamVersion());
         EXPECT_TRUE(header.Sequences().empty());
         EXPECT_TRUE(header.Comments().empty());
         ASSERT_FALSE(header.Programs().empty());
 
-        const vector<string> readGroupIds = header.ReadGroupIds();
+        const std::vector<std::string> readGroupIds = header.ReadGroupIds();
         ASSERT_FALSE(readGroupIds.empty());
         const ReadGroupInfo& rg = header.ReadGroup(readGroupIds.front());
 
-        string rawId = movieName + "//CCS";
-        string md5Id;
+        std::string rawId = movieName + "//CCS";
+        std::string md5Id;
         MakeMD5(rawId, md5Id, 8);
         EXPECT_EQ(md5Id, rg.Id());
 
-        EXPECT_EQ(string("PACBIO"), rg.Platform());
+        EXPECT_EQ(std::string("PACBIO"), rg.Platform());
         EXPECT_EQ(movieName, rg.MovieName());
 
         EXPECT_TRUE(rg.SequencingCenter().empty());
@@ -169,7 +168,7 @@ compare:
 
             const int holeNumber      = baxRecord.zmwData.holeNumber;
             const int numPasses       = baxRecord.numPasses;
-            const string expectedName = baxRecord.GetName();
+            const std::string expectedName = baxRecord.GetName();
             EXPECT_EQ(expectedName, bamRecordImpl.Name());
 
             using PacBio::BAM::QualityValue;
@@ -177,13 +176,13 @@ compare:
 
             const DNALength length = baxRecord.length;
 
-            string expectedSequence;
+            std::string expectedSequence;
             expectedSequence.assign((const char*)baxRecord.seq, length);
 
             QualityValues expectedQualities;
             expectedQualities.assign((uint8_t*)baxRecord.qual.data, baxRecord.qual.data + length);
 
-            const string bamSequence = bamRecord.Sequence();
+            const std::string bamSequence = bamRecord.Sequence();
             const QualityValues bamQualities = bamRecord.Qualities();
             EXPECT_EQ(expectedSequence,  bamSequence);
             EXPECT_EQ(expectedQualities, bamQualities);

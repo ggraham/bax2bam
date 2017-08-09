@@ -4,8 +4,6 @@
 #include <pbbam/BamRecord.h>
 #include <pbbam/BamWriter.h>
 
-using namespace std;
-
 PolymeraseReadConverter::PolymeraseReadConverter(Settings& settings)
     : ConverterBase(settings)
 { }
@@ -47,14 +45,14 @@ bool PolymeraseReadConverter::ConvertFile(HDFBasReader* reader,
                                           PacBio::BAM::BamWriter* scrapsWriter) 
 { return false; }
 
-string PolymeraseReadConverter::HeaderReadType(void) const
+std::string PolymeraseReadConverter::HeaderReadType(void) const
 { return "POLYMERASE"; }
 
-string PolymeraseReadConverter::ScrapsReadType(void) const
+std::string PolymeraseReadConverter::ScrapsReadType(void) const
 { return "UNKNOWN"; }
 
-string PolymeraseReadConverter::OutputFileSuffix(void) const
+std::string PolymeraseReadConverter::OutputFileSuffix(void) const
 { return ".polymerase.bam"; }
 
-string PolymeraseReadConverter::ScrapsFileSuffix(void) const
+std::string PolymeraseReadConverter::ScrapsFileSuffix(void) const
 { return ".empty.bam"; }
