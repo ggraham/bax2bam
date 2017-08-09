@@ -117,7 +117,7 @@ bool WriteDatasetXmlOutput(const Settings& settings,
         for (; iter != end; ++iter) {
             ExternalResource e = (*iter);
             boost::iterator_range<std::string::iterator> baxFound = boost::algorithm::ifind_first(e.MetaType(), "bax");
-            if (!baxFound.empty()) 
+            if (!baxFound.empty())
                 toRemove.push_back(e);
         }
 
@@ -136,7 +136,7 @@ bool WriteDatasetXmlOutput(const Settings& settings,
             mainBamFilepath = settings.outputBamFilename;
         }
         else // otherwise build the path from the CWD
-        { 
+        {
             mainBamFilepath = CurrentWorkingDir();
             if (!mainBamFilepath.empty())
                 mainBamFilepath.append(1, '/');
@@ -195,7 +195,7 @@ bool WriteDatasetXmlOutput(const Settings& settings,
         metadata.NumRecords(std::to_string(numRecords));
         dataset.Metadata(metadata);
 
-        // save to file 
+        // save to file
         std::string xmlFn = settings.outputXmlFilename; // try user-provided explicit filename first
         if (xmlFn.empty())
             xmlFn = settings.outputBamPrefix + outputXmlSuffix; // prefix set w/ moviename elsewhere if not user-provided

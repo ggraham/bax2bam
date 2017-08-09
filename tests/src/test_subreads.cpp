@@ -89,7 +89,7 @@ void ComputeSubreadIntervals(std::vector<SubreadInterval>* const intervals,
     bool prevIsAdapter = false;
     size_t regStart = hqStart;
     std::vector<ReadInterval> adapters = zmwRegions.AdapterIntervals();
-    for (size_t i = 0; i < adapters.size(); i++) { 
+    for (size_t i = 0; i < adapters.size(); i++) {
         ReadInterval adapter = adapters[i];
         size_t adapterStart = adapter.start;
         size_t adapterEnd   = adapter.end;
@@ -252,7 +252,7 @@ TEST(SubreadsTest, EndToEnd_Multiple)
         size_t numTested = 0;
         EntireFileQuery entireFile(bamFile);
         for (BamRecord& bamRecord : entireFile) {
- 
+
             if (numTested > 30)
                 goto cleanup;
 

@@ -42,7 +42,7 @@ bool PolymeraseReadConverter::ConvertFile(HDFBasReader* reader,
 
 bool PolymeraseReadConverter::ConvertFile(HDFBasReader* reader,
                                           PacBio::BAM::BamWriter* writer,
-                                          PacBio::BAM::BamWriter* scrapsWriter) 
+                                          PacBio::BAM::BamWriter* scrapsWriter)
 { return false; }
 
 std::string PolymeraseReadConverter::HeaderReadType(void) const

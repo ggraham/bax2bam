@@ -26,7 +26,7 @@ bool HqRegionConverter::ConvertFile(HDFBasReader* reader,
 
 bool HqRegionConverter::ConvertFile(HDFBasReader* reader,
                                     PacBio::BAM::BamWriter* writer,
-                                    PacBio::BAM::BamWriter* scrapsWriter) 
+                                    PacBio::BAM::BamWriter* scrapsWriter)
 {
     assert(reader);
 
