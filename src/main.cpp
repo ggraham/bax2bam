@@ -6,7 +6,6 @@
 #include <iostream>
 #include <string>
 #include <cstdlib>
-using namespace std;
 
 int main(int argc, char* argv[])
 {
@@ -118,10 +117,10 @@ int main(int argc, char* argv[])
     // parse command line
     Settings settings = Settings::FromCommandLine(parser, argc, argv);
     if (!settings.errors.empty()) {
-        cerr << endl;
+        std::cerr << std::endl;
         for (const auto e : settings.errors)
-            cerr << "ERROR: " << e << endl;
-        cerr << endl;
+            std::cerr << "ERROR: " << e << std::endl;
+        std::cerr << std::endl;
         parser.print_help();
         return EXIT_FAILURE;
     }

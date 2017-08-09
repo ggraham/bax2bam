@@ -15,7 +15,6 @@
 #define MAX( A, B )     ( (A)>(B) ? (A) : (B) )
 #define MAX3( A, B, C ) MAX( MAX( A, B ), C )
 
-using namespace std;
 using namespace PacBio;
 using namespace PacBio::BAM;
 
@@ -55,8 +54,8 @@ struct ReadIntervalComparer {
     }
 };
 
-SubreadInterval ComputeSubreadIntervals(deque<SubreadInterval>* const intervals,
-                                        deque<SubreadInterval>* const adapters,
+SubreadInterval ComputeSubreadIntervals(std::deque<SubreadInterval>* const intervals,
+                                        std::deque<SubreadInterval>* const adapters,
                                         RegionTable& regionTable,
                                         const unsigned holeNumber,
                                         const size_t readLength)
@@ -86,7 +85,7 @@ SubreadInterval ComputeSubreadIntervals(deque<SubreadInterval>* const intervals,
         return SubreadInterval(0, 0);
 
     // adapter intervals of this zmw
-    vector<ReadInterval> adapterIntervals = zmwRegions.AdapterIntervals();
+    std::vector<ReadInterval> adapterIntervals = zmwRegions.AdapterIntervals();
 
     // Catch and trim overlapping adapter calls
     // Shared starts indicate multiple alignments for the same adapter
@@ -125,7 +124,7 @@ SubreadInterval ComputeSubreadIntervals(deque<SubreadInterval>* const intervals,
 
         // Save the region of the adapter that overlaps the HQ region
         adapters->emplace_back(SubreadInterval(MAX3(adapterStart, hqStart, subreadStart), 
-                    min(adapterEnd, hqEnd)));
+                    std::min(adapterEnd, hqEnd)));
 
         subreadStart  = adapterEnd;
         adapterBefore = true;
@@ -158,7 +157,7 @@ bool SubreadConverter::ConvertFile(HDFBasReader* reader,
     // read region table info
     std::unique_ptr<HDFRegionTableReader> const regionTableReader(new HDFRegionTableReader);
     RegionTable regionTable;
-    string fn = filenameForReader_[reader];
+    std::string fn = filenameForReader_[reader];
     assert(!fn.empty());
     if (regionTableReader->Initialize(fn) == 0) {
         AddErrorMessage("could not read region table on "+fn);
@@ -177,16 +176,16 @@ bool SubreadConverter::ConvertFile(HDFBasReader* reader,
 
         // compute subread & adapter intervals
         SubreadInterval hqInterval;
-        deque<SubreadInterval> subreadIntervals;
-        deque<SubreadInterval> adapterIntervals;
+        std::deque<SubreadInterval> subreadIntervals;
+        std::deque<SubreadInterval> adapterIntervals;
         try {
             hqInterval = ComputeSubreadIntervals(&subreadIntervals,
                                                  &adapterIntervals,
                                                  regionTable,
                                                  smrtRecord.zmwData.holeNumber,
                                                  smrtRecord.length);
-        } catch (runtime_error& e) {
-            AddErrorMessage(string(e.what()));
+        } catch (std::runtime_error& e) {
+            AddErrorMessage(std::string(e.what()));
             smrtRecord.Free();
             return false;
         }
@@ -382,14 +381,14 @@ bool SubreadConverter::ConvertFile(HDFBasReader* reader,
     return true; 
 } 
 
-string SubreadConverter::HeaderReadType(void) const
+std::string SubreadConverter::HeaderReadType(void) const
 { return "SUBREAD"; }
 
-string SubreadConverter::ScrapsReadType(void) const
+std::string SubreadConverter::ScrapsReadType(void) const
 { return "SCRAP"; }
 
-string SubreadConverter::OutputFileSuffix(void) const
+std::string SubreadConverter::OutputFileSuffix(void) const
 { return ".subreads.bam"; }
 
-string SubreadConverter::ScrapsFileSuffix(void) const
+std::string SubreadConverter::ScrapsFileSuffix(void) const
 { return ".scraps.bam"; }

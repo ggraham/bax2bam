@@ -6,23 +6,22 @@
 #include <HDFNewBasReader.hpp>
 #include <pbbam/DataSet.h>
 #include <sstream>
-using namespace std;
 
 namespace internal {
 
 static
-vector<string> BaxFilenamesFromXml(const string& xmlFilename)
+std::vector<std::string> BaxFilenamesFromXml(const std::string& xmlFilename)
 {
     using namespace PacBio::BAM;
 
     try {
-        vector<string> filenames;
+        std::vector<std::string> filenames;
 
         DataSet dataset(xmlFilename);
-        const vector<string> resources = dataset.ResolvedResourceIds();
-        for (const string& resource : resources) {
-            cerr << resource << endl;
-            const boost::iterator_range<string::const_iterator> baxFound = boost::algorithm::ifind_first(resource, ".bax.h5");
+        const std::vector<std::string> resources = dataset.ResolvedResourceIds();
+        for (const std::string& resource : resources) {
+            std::cerr << resource << std::endl;
+            const boost::iterator_range<std::string::const_iterator> baxFound = boost::algorithm::ifind_first(resource, ".bax.h5");
             if (!baxFound.empty()) 
                 filenames.push_back(resource);
         }
@@ -30,16 +29,16 @@ vector<string> BaxFilenamesFromXml(const string& xmlFilename)
 
     } catch (std::exception&) {
         // TODO: report error
-        return vector<string>();
+        return std::vector<std::string>();
     }
 }
 
 static
-vector<string> FilenamesFromFofn(const string& fileName)
+std::vector<std::string> FilenamesFromFofn(const std::string& fileName)
 {
-    vector<string> retval;
-    ifstream in_stream;
-    string line;
+    std::vector<std::string> retval;
+    std::ifstream in_stream;
+    std::string line;
 
     in_stream.open(fileName);
 
@@ -55,14 +54,14 @@ vector<string> FilenamesFromFofn(const string& fileName)
 }        
 
 static
-bool isBasH5(const string& fileName)
+bool isBasH5(const std::string& fileName)
 {
     return boost::ends_with(boost::to_lower_copy(fileName), ".bas.h5");
 }
 
 static
-void H5FilenamesFromBasH5(const string& basFileName,
-                          vector<string>* const output)
+void H5FilenamesFromBasH5(const std::string& basFileName,
+                          std::vector<std::string>* const output)
 {
     HDFNewBasReader reader;
     if (reader.Initialize(basFileName))
@@ -218,8 +217,8 @@ Settings Settings::FromCommandLine(optparse::OptionParser& parser,
         settings.usingSubstitutionTag = false;
 
         // apply user-requested features
-        stringstream stream(options[Settings::Option::pulseFeatures_]);
-        string feature;
+        std::stringstream stream(options[Settings::Option::pulseFeatures_]);
+        std::string feature;
         while(std::getline(stream, feature, ',')) {
             if      (feature == "DeletionQV")      settings.usingDeletionQV = true;
             else if (feature == "DeletionTag")     settings.usingDeletionTag = true;
@@ -230,7 +229,7 @@ Settings Settings::FromCommandLine(optparse::OptionParser& parser,
             else if (feature == "SubstitutionQV")  settings.usingSubstitutionQV = true;
             else if (feature == "SubstitutionTag") settings.usingSubstitutionTag = true;
             else
-                settings.errors.push_back(string("unknown pulse feature: ") + feature);
+                settings.errors.push_back(std::string("unknown pulse feature: ") + feature);
         }
     }
 
@@ -240,7 +239,7 @@ Settings Settings::FromCommandLine(optparse::OptionParser& parser,
 
 #ifdef DEBUG_SETTINGS
 
-    string modeString;
+    std::string modeString;
     if (settings.mode == Settings::SubreadMode)
         modeString = "subread";
     else if (settings.mode == Settings::HQRegionMode)
@@ -250,21 +249,21 @@ Settings Settings::FromCommandLine(optparse::OptionParser& parser,
     else
         modeString = "ccs";
 
-    string platformString = settings.isSequelInput_ ? "Sequel" : "RS";
+    std::string platformString = settings.isSequelInput_ ? "Sequel" : "RS";
 
-    cerr << "CommandLine: " << settings.program << " " << settings.args << endl
-         << "Description: " << settings.description << endl
-         << "Version:     " << settings.version << endl
-         << "Mode:        " << modeString << endl
-         << "Platform:    " << platformString << endl
-         << "DeletionQV?:      " << ( settings.usingDeletionQV ? "yes" : "no" ) << endl
-         << "DeletionTag?:     " << ( settings.usingDeletionTag ? "yes" : "no" ) << endl
-         << "InsertionQV?:     " << ( settings.usingInsertionQV ? "yes" : "no" ) << endl
-         << "IPD?:             " << ( settings.usingMergeQV ? "yes" : "no" ) << endl
-         << "MergeQV?:         " << ( settings.usingIPD ? "yes" : "no" ) << endl
-         << "PulseWidth?:      " << ( settings.usingPulseWidth ? "yes" : "no" ) << endl
-         << "SubstitutionQV?:  " << ( settings.usingSubstitutionQV ? "yes" : "no" ) << endl
-         << "SubstitutionTag?: " << ( settings.usingSubstitutionTag ? "yes" : "no" ) << endl;
+    std::cerr << "CommandLine: " << settings.program << " " << settings.args << std::endl
+         << "Description: " << settings.description << std::endl
+         << "Version:     " << settings.version << std::endl
+         << "Mode:        " << modeString << std::endl
+         << "Platform:    " << platformString << std::endl
+         << "DeletionQV?:      " << ( settings.usingDeletionQV ? "yes" : "no" ) << std::endl
+         << "DeletionTag?:     " << ( settings.usingDeletionTag ? "yes" : "no" ) << std::endl
+         << "InsertionQV?:     " << ( settings.usingInsertionQV ? "yes" : "no" ) << std::endl
+         << "IPD?:             " << ( settings.usingMergeQV ? "yes" : "no" ) << std::endl
+         << "MergeQV?:         " << ( settings.usingIPD ? "yes" : "no" ) << std::endl
+         << "PulseWidth?:      " << ( settings.usingPulseWidth ? "yes" : "no" ) << std::endl
+         << "SubstitutionQV?:  " << ( settings.usingSubstitutionQV ? "yes" : "no" ) << std::endl
+         << "SubstitutionTag?: " << ( settings.usingSubstitutionTag ? "yes" : "no" ) << std::endl;
 #endif
 
     return settings;

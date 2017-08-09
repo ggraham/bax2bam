@@ -302,7 +302,6 @@ bool ConverterBase<RecordType, HdfReader>::ConvertRecord(
 {
     using namespace PacBio;
     using namespace PacBio::BAM;
-    using namespace std;
 
     // sanity check
     assert(bamRecord);
@@ -419,7 +418,7 @@ bool ConverterBase<RecordType, HdfReader>::ConvertRecord(
     if (HeaderReadType() != "CCS")
     {
         // Stored as 'ACGT' in BAM, no fixed order in SMRTSequence
-        vector<float> hqSnr = { smrtRead.HQRegionSnr('A'),
+        std::vector<float> hqSnr = { smrtRead.HQRegionSnr('A'),
                                 smrtRead.HQRegionSnr('C'),   
                                 smrtRead.HQRegionSnr('G'),   
                                 smrtRead.HQRegionSnr('T')};
@@ -711,10 +710,10 @@ void ConverterBase<RecordType, HdfReader>::AddRecordName(
         const int start,
         const int end)
 {
-    const string name = settings_.movieName + "/"
-                      + to_string(holeNumber) + "/"
-                      + to_string(start) + "_"
-                      + to_string(end);
+    const std::string name = settings_.movieName + "/"
+                      + std::to_string(holeNumber) + "/"
+                      + std::to_string(start) + "_"
+                      + std::to_string(end);
     bamRecord->Name(name);
 }
 
@@ -845,14 +844,13 @@ bool ConverterBase<RecordType, HdfReader>::Run(void)
 {
     using namespace PacBio;
     using namespace PacBio::BAM;
-    using namespace std;
 
-    set<string> movieNames;
+    std::set<std::string> movieNames;
 
     // initialize input BAX readers
     const auto baxEnd = settings_.inputBaxFilenames.cend();
     for (auto baxIter = settings_.inputBaxFilenames.cbegin(); baxIter != baxEnd; ++baxIter) {
-        const string& baxFn = (*baxIter);
+        const std::string& baxFn = (*baxIter);
         if (baxFn.empty())
             continue;
 
@@ -953,7 +951,7 @@ fallback:
     if (movieNames.size() != 1) {
         AddErrorMessage("multiple movies detected:");
         for (const auto m : movieNames)
-            AddErrorMessage(string("    ")+m);
+            AddErrorMessage(std::string("    ")+m);
         return false;
     }
     settings_.movieName = (*movieNames.cbegin());
