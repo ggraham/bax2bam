@@ -47,7 +47,7 @@ TEST(PolymeraseTest, EndToEnd_Single)
     baxReader.IncludeField("SubstitutionQV");
     baxReader.IncludeField("HQRegionSNR");
     baxReader.IncludeField("WidthInFrames");
-    // not using SubTag 
+    // not using SubTag
 
     std::string baxBasecallerVersion;
     std::string baxBindingKit;
@@ -139,7 +139,7 @@ TEST(PolymeraseTest, EndToEnd_Single)
         hqSnr.push_back(baxRecord.HQRegionSnr('C'));
         hqSnr.push_back(baxRecord.HQRegionSnr('G'));
         hqSnr.push_back(baxRecord.HQRegionSnr('T'));
- 
+
         EXPECT_FLOAT_EQ(0.0, hqSnr[0]);
         EXPECT_FLOAT_EQ(0.0, hqSnr[1]);
         EXPECT_FLOAT_EQ(0.0, hqSnr[2]);

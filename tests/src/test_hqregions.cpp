@@ -51,7 +51,7 @@ TEST(HqRegionsTest, EndToEnd_Single)
     baxReader.IncludeField("MergeQV");
     baxReader.IncludeField("SubstitutionQV");
     baxReader.IncludeField("HQRegionSNR");
-    // not using SubTag or PulseWidth 
+    // not using SubTag or PulseWidth
 
     std::string baxBasecallerVersion;
     std::string baxBindingKit;
@@ -82,7 +82,7 @@ TEST(HqRegionsTest, EndToEnd_Single)
 
         baxReader.GetChangeListID(baxBasecallerVersion);
     }
-        
+
     // compare 1st record from each file
     SMRTSequence baxRecord;
     EXPECT_TRUE(baxReader.GetNext(baxRecord) > 0);

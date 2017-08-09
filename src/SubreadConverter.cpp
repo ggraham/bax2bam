@@ -123,7 +123,7 @@ SubreadInterval ComputeSubreadIntervals(std::deque<SubreadInterval>* const inter
             intervals->emplace_back(SubreadInterval(subreadStart, adapterStart, adapterBefore, true));
 
         // Save the region of the adapter that overlaps the HQ region
-        adapters->emplace_back(SubreadInterval(MAX3(adapterStart, hqStart, subreadStart), 
+        adapters->emplace_back(SubreadInterval(MAX3(adapterStart, hqStart, subreadStart),
                     std::min(adapterEnd, hqEnd)));
 
         subreadStart  = adapterEnd;
@@ -147,7 +147,7 @@ bool SubreadConverter::ConvertFile(HDFBasReader* reader,
 
 bool SubreadConverter::ConvertFile(HDFBasReader* reader,
                                    PacBio::BAM::BamWriter* writer,
-                                   PacBio::BAM::BamWriter* scrapsWriter) 
+                                   PacBio::BAM::BamWriter* scrapsWriter)
 {
     assert(reader);
 
@@ -378,8 +378,8 @@ bool SubreadConverter::ConvertFile(HDFBasReader* reader,
     }
 
     // if we get here, all OK
-    return true; 
-} 
+    return true;
+}
 
 std::string SubreadConverter::HeaderReadType(void) const
 { return "SUBREAD"; }

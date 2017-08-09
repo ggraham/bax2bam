@@ -22,7 +22,7 @@ std::vector<std::string> BaxFilenamesFromXml(const std::string& xmlFilename)
         for (const std::string& resource : resources) {
             std::cerr << resource << std::endl;
             const boost::iterator_range<std::string::const_iterator> baxFound = boost::algorithm::ifind_first(resource, ".bax.h5");
-            if (!baxFound.empty()) 
+            if (!baxFound.empty())
                 filenames.push_back(resource);
         }
         return filenames;
@@ -51,7 +51,7 @@ std::vector<std::string> FilenamesFromFofn(const std::string& fileName)
     }
 
     return retval;
-}        
+}
 
 static
 bool isBasH5(const std::string& fileName)
@@ -137,7 +137,7 @@ Settings Settings::FromCommandLine(optparse::OptionParser& parser,
     else if ( options.is_set(Settings::Option::fofn_))
     {
         settings.fofnFilename = options[Settings::Option::fofn_];
-        settings.inputFilenames = internal::FilenamesFromFofn(settings.fofnFilename);        
+        settings.inputFilenames = internal::FilenamesFromFofn(settings.fofnFilename);
     }
 
     // else input files command-line args

@@ -114,7 +114,7 @@ protected:
     virtual bool IsSequencingZmw(const RecordType& record) const final;
 
     virtual bool LoadChemistryFromMetadataXML(const std::string& baxFn,
-                                              const std::string& movieName) final; 
+                                              const std::string& movieName) final;
 
     virtual std::string HeaderReadType(void) const =0;
     virtual std::string ScrapsReadType(void) const =0;
@@ -419,8 +419,8 @@ bool ConverterBase<RecordType, HdfReader>::ConvertRecord(
     {
         // Stored as 'ACGT' in BAM, no fixed order in SMRTSequence
         std::vector<float> hqSnr = { smrtRead.HQRegionSnr('A'),
-                                smrtRead.HQRegionSnr('C'),   
-                                smrtRead.HQRegionSnr('G'),   
+                                smrtRead.HQRegionSnr('C'),
+                                smrtRead.HQRegionSnr('G'),
                                 smrtRead.HQRegionSnr('T')};
         tags[Tag_sn] = hqSnr;
     }
@@ -855,7 +855,7 @@ bool ConverterBase<RecordType, HdfReader>::Run(void)
             continue;
 
         HdfReader* reader = InitHdfReader();
-        
+
         // read in mandatory ReadGroupInfo from bax file
         if (reader->Initialize(baxFn) &&
             reader->scanDataReader.fileHasScanData &&
@@ -991,14 +991,14 @@ fallback:
         PbiFile::CreateFrom(BamFile{ settings_.outputBamFilename });
         PbiFile::CreateFrom(BamFile{ settings_.scrapsBamFilename });
 
-    } else { 
+    } else {
 
         assert(settings_.scrapsBamFilename.empty());
 
         // main conversion of BAX -> BAM records for single-output jobs
         try {
             BamWriter writer(settings_.outputBamFilename, CreateHeader(HeaderReadType()));
-          
+
             for (HdfReader* reader : readers_) {
                 assert(reader);
                 if (!ConvertFile(reader, &writer))

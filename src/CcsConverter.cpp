@@ -58,7 +58,7 @@ bool CcsConverter::ConvertFile(HdfCcsReader* reader,
 
 bool CcsConverter::ConvertFile(HdfCcsReader* reader,
                                PacBio::BAM::BamWriter* writer,
-                               PacBio::BAM::BamWriter* scrapsWriter) 
+                               PacBio::BAM::BamWriter* scrapsWriter)
 { return false; }
 
 void CcsConverter::SetSequenceAndQualities(PacBio::BAM::BamRecordImpl* bamRecord,
