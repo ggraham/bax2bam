@@ -1,0 +1,3 @@
+option('enable-bax2bam-tests', type : 'boolean', value : false, description : 'Enable dependencies required for testing')
+option('HDF5_CFLAGS',          type : 'string',                 description : 'Directives needed for compiling against HDF5 (-I<dir> -D<value>)')
+option('HDF5_LIBS',            type : 'string',                 description : 'Directives needed for linking against HDF5 (-L<dir> -l<libname>)')

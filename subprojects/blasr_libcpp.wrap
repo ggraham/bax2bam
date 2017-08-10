@@ -1,0 +1,4 @@
+[wrap-git]
+directory=blasr_libcpp
+url=https://github.com/PacificBiosciences/blasr_libcpp.git
+revision=develop
