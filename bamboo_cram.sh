@@ -4,7 +4,7 @@ type module >& /dev/null || . /mnt/software/Modules/current/init/bash
 module load gcc/6.4.0
 module load hdf5-tools/1.8.19
 module load zlib/1.2.11
-module load htslib/1.3.1
+module load htslib/1.5
 module load cram/0.7
 
 PATH=$PWD/bax2bam/bin:$PATH
