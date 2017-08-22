@@ -23,7 +23,7 @@ module load ninja/1.7.1
 module load cmake/3.7.2
 module load zlib/1.2.11
 module load hdf5-tools/1.8.19
-module load htslib/1.5
+module load htslib/1.3.1
 set -x
 
 cd pbbam
@@ -52,6 +52,7 @@ cd ../bax2bam
 export CCACHE_BASEDIR=$PWD
 mkdir -p build
 cd build && rm -rf *
+set +x
 cmake \
         -DBoost_INCLUDE_DIRS=$BOOST_ROOT/include \
               -DHDF5_RootDir=$(pkg-config --libs-only-L hdf5|awk '{print $1}'|sed -e 's/^-L//'|xargs dirname) \
@@ -69,4 +70,5 @@ cmake \
           -DPBIHDF_LIBRARIES=$PWD/../../blasr_libcpp/hdf/libpbihdf.a \
           -DPBDATA_LIBRARIES=$PWD/../../blasr_libcpp/pbdata/libpbdata.a \
   ..
+set -x
 make
