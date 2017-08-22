@@ -10,7 +10,7 @@ ln -sfn googletest-release-1.7.0 gtest
 set +x
 type module >& /dev/null || . /mnt/software/Modules/current/init/bash
 module load git/2.8.3
-module load gcc/4.9.2
+module load gcc/6.4.0
 module load ccache/3.2.3
 export CCACHE_DIR=/mnt/secondary/Share/tmp/bamboo.mobs.ccachedir
 module load boost/1.60
