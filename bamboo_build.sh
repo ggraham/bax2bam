@@ -10,9 +10,9 @@ ln -sfn googletest-release-1.7.0 gtest
 set +x
 type module >& /dev/null || . /mnt/software/Modules/current/init/bash
 module load git/2.8.3
-module load gcc/4.9.2
+module load gcc/6.4.0
 module load ccache/3.2.3
-export CCACHE_DIR=/mnt/secondary/Share/tmp/bamboo.mobs.ccachedir
+[[ $USER == "bamboo" ]] && export CCACHE_DIR=/mnt/secondary/Share/tmp/bamboo.mobs.ccachedir || true
 module load boost/1.60
 if [[ $BOOST_ROOT =~ /include ]]; then
   set -x
@@ -21,8 +21,8 @@ if [[ $BOOST_ROOT =~ /include ]]; then
 fi
 module load ninja/1.7.1
 module load cmake/3.7.2
-module load hdf5-tools/1.8.16
-module load zlib/1.2.8
+module load zlib/1.2.11
+module load hdf5-tools/1.8.19
 module load htslib/1.3.1
 set -x
 
@@ -52,6 +52,7 @@ cd ../bax2bam
 export CCACHE_BASEDIR=$PWD
 mkdir -p build
 cd build && rm -rf *
+set +x
 cmake \
         -DBoost_INCLUDE_DIRS=$BOOST_ROOT/include \
               -DHDF5_RootDir=$(pkg-config --libs-only-L hdf5|awk '{print $1}'|sed -e 's/^-L//'|xargs dirname) \
@@ -69,4 +70,5 @@ cmake \
           -DPBIHDF_LIBRARIES=$PWD/../../blasr_libcpp/hdf/libpbihdf.a \
           -DPBDATA_LIBRARIES=$PWD/../../blasr_libcpp/pbdata/libpbdata.a \
   ..
+set -x
 make
