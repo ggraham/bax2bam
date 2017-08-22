@@ -12,7 +12,7 @@ type module >& /dev/null || . /mnt/software/Modules/current/init/bash
 module load git/2.8.3
 module load gcc/6.4.0
 module load ccache/3.2.3
-export CCACHE_DIR=/mnt/secondary/Share/tmp/bamboo.mobs.ccachedir
+[[ $USER == "bamboo" ]] && export CCACHE_DIR=/mnt/secondary/Share/tmp/bamboo.mobs.ccachedir || true
 module load boost/1.60
 if [[ $BOOST_ROOT =~ /include ]]; then
   set -x
@@ -23,7 +23,7 @@ module load ninja/1.7.1
 module load cmake/3.7.2
 module load hdf5-tools/1.8.16
 module load zlib/1.2.8
-module load htslib/1.3.1
+module load htslib/1.5
 set -x
 
 cd pbbam
