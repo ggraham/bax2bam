@@ -11,7 +11,7 @@ set +x
 type module >& /dev/null || . /mnt/software/Modules/current/init/bash
 module load git/2.8.3
 module load gcc/6.4.0
-module load ccache/3.2.3
+#module load ccache/3.2.3
 [[ $USER == "bamboo" ]] && export CCACHE_DIR=/mnt/secondary/Share/tmp/bamboo.mobs.ccachedir || true
 module load boost/1.60
 if [[ $BOOST_ROOT =~ /include ]]; then
