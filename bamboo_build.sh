@@ -36,14 +36,14 @@ cd ../../blasr_libcpp
 rm -f defines.mk
 python configure.py \
       PREFIX=dummy \
-    HDF5_INC=$(pkg-config --cflags-only-I hdf5|awk '{print $1}'|sed -e 's/^-I//') \
-    HDF5_LIB=$(pkg-config --libs-only-L hdf5|awk '{print $1}'|sed -e 's/^-L//') \
+    HDF5_INC=$(pkg-config --variable includedir hdf5) \
+    HDF5_LIB=$(pkg-config --variable libdir hdf5) \
     ZLIB_LIB=$ZLIB_ROOT/lib \
    PBBAM_INC=$PWD/../pbbam/include \
    PBBAM_LIB=$PWD/../pbbam/build/lib \
    BOOST_INC=$BOOST_ROOT/include \
-  HTSLIB_INC=$(pkg-config --cflags-only-I htslib|awk '{print $1}'|sed -e 's/^-I//') \
-  HTSLIB_LIB=$(pkg-config --libs-only-L htslib|awk '{print $1}'|sed -e 's/^-L//')
+  HTSLIB_INC=$(pkg-config --variable includedir htslib) \
+  HTSLIB_LIB=$(pkg-config --variable libdir htslib)
 make -j libpbdata LDLIBS=-lpbbam
 make -j libpbihdf
 make -j libblasr
