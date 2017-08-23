@@ -36,8 +36,8 @@ cd ../../blasr_libcpp
 rm -f defines.mk
 python configure.py \
       PREFIX=dummy \
-    HDF5_INC=$(pkg-config --variable includedir hdf5) \
-    HDF5_LIB=$(pkg-config --variable libdir hdf5) \
+    HDF5_INC=$(pkg-config --cflags-only-I hdf5|awk '{print $1}'|sed -e 's/^-I//') \
+    HDF5_LIB=$(pkg-config --libs-only-L hdf5|awk '{print $1}'|sed -e 's/^-L//') \
     ZLIB_LIB=$ZLIB_ROOT/lib \
    PBBAM_INC=$PWD/../pbbam/include \
    PBBAM_LIB=$PWD/../pbbam/build/lib \
