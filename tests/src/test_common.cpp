@@ -9,7 +9,7 @@ TEST(CommonTest, EmptyCommandLine)
     EXPECT_TRUE(true);
 }
 
-TEST(CommonTest, NormalCommandLine) 
+TEST(CommonTest, NormalCommandLine)
 {
     EXPECT_TRUE(true);
 }

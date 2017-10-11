@@ -14,25 +14,24 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <time.h>
+#include <ctime>
 
 #include <unistd.h> // getcwd
-using namespace std;
 
 namespace internal {
 
 static inline
-string CurrentWorkingDir(void)
+std::string CurrentWorkingDir(void)
 {
     char result[FILENAME_MAX] = { };
     if (getcwd(result, FILENAME_MAX) == nullptr)
-        return string();
-    return string(result);
+        return std::string();
+    return std::string(result);
 }
 
 static
 bool WriteDatasetXmlOutput(const Settings& settings,
-                           vector<string>* errors)
+                           std::vector<std::string>* errors)
 {
     using namespace PacBio::BAM;
     assert(errors);
@@ -42,11 +41,11 @@ bool WriteDatasetXmlOutput(const Settings& settings,
         // determine output details based on mode
         // initialize with SUBREAD data (most common)
         DataSet::TypeEnum outputDataSetType;
-        string outputDataSetMetaType;
-        string outputTimestampPrefix;
-        string outputBamFileType;
-        string outputScrapsFileType;
-        string outputXmlSuffix;
+        std::string outputDataSetMetaType;
+        std::string outputTimestampPrefix;
+        std::string outputBamFileType;
+        std::string outputScrapsFileType;
+        std::string outputXmlSuffix;
 
         switch(settings.mode)
         {
@@ -106,7 +105,7 @@ bool WriteDatasetXmlOutput(const Settings& settings,
         dataset.MetaType(outputDataSetMetaType);
 
         time_t currentTime = time(NULL);
-        //const string& timestamp = CurrentTimestamp();
+        //const std::string& timestamp = CurrentTimestamp();
         dataset.CreatedAt(ToIso8601(currentTime));
         dataset.TimeStampedName(outputTimestampPrefix+ToDataSetFormat(currentTime));
 
@@ -117,8 +116,8 @@ bool WriteDatasetXmlOutput(const Settings& settings,
         auto end  = resources.cend();
         for (; iter != end; ++iter) {
             ExternalResource e = (*iter);
-            boost::iterator_range<string::iterator> baxFound = boost::algorithm::ifind_first(e.MetaType(), "bax");
-            if (!baxFound.empty()) 
+            boost::iterator_range<std::string::iterator> baxFound = boost::algorithm::ifind_first(e.MetaType(), "bax");
+            if (!baxFound.empty())
                 toRemove.push_back(e);
         }
 
@@ -128,8 +127,8 @@ bool WriteDatasetXmlOutput(const Settings& settings,
             toRemove.pop_back();
         }
 
-        const string scheme = "file://";
-        string mainBamFilepath;
+        const std::string scheme = "file://";
+        std::string mainBamFilepath;
 
         // If the output filename starts with a slash, assume it's the path
         if (boost::starts_with(settings.outputBamFilename, "/"))
@@ -137,7 +136,7 @@ bool WriteDatasetXmlOutput(const Settings& settings,
             mainBamFilepath = settings.outputBamFilename;
         }
         else // otherwise build the path from the CWD
-        { 
+        {
             mainBamFilepath = CurrentWorkingDir();
             if (!mainBamFilepath.empty())
                 mainBamFilepath.append(1, '/');
@@ -153,7 +152,7 @@ bool WriteDatasetXmlOutput(const Settings& settings,
         // maybe add scraps BAM (& PBI)
         if (!settings.scrapsBamFilename.empty()) {
 
-            string scrapsBamFilepath;
+            std::string scrapsBamFilepath;
 
             // If the output filename starts with a slash, assume it's the path
             if (boost::starts_with(settings.scrapsBamFilename, "/"))
@@ -180,7 +179,7 @@ bool WriteDatasetXmlOutput(const Settings& settings,
 
         // update TotalLength & NumRecords
         const BamFile subreadFile{ settings.outputBamFilename };
-        const string subreadPbiFn = subreadFile.PacBioIndexFilename();
+        const std::string subreadPbiFn = subreadFile.PacBioIndexFilename();
         const PbiRawData subreadsIndex{ subreadPbiFn };
         const PbiRawBasicData& subreadData = subreadsIndex.BasicData();
 
@@ -196,8 +195,8 @@ bool WriteDatasetXmlOutput(const Settings& settings,
         metadata.NumRecords(std::to_string(numRecords));
         dataset.Metadata(metadata);
 
-        // save to file 
-        string xmlFn = settings.outputXmlFilename; // try user-provided explicit filename first
+        // save to file
+        std::string xmlFn = settings.outputXmlFilename; // try user-provided explicit filename first
         if (xmlFn.empty())
             xmlFn = settings.outputBamPrefix + outputXmlSuffix; // prefix set w/ moviename elsewhere if not user-provided
         dataset.Save(xmlFn);
@@ -221,13 +220,13 @@ int Bax2Bam::Run(Settings& settings) {
         case Settings::SubreadMode    : converter.reset(new SubreadConverter(settings)); break;
         case Settings::CCSMode        : converter.reset(new CcsConverter(settings)); break;
         default :
-            cerr << "ERROR: unknown mode selected" << endl;
+            std::cerr << "ERROR: unknown mode selected" << std::endl;
             return EXIT_FAILURE;
     }
 
     // run conversion
     bool success = false;
-    vector<string> xmlErrors;
+    std::vector<std::string> xmlErrors;
     if (converter->Run()) {
         success = true;
 
@@ -242,10 +241,10 @@ int Bax2Bam::Run(Settings& settings) {
     if (success)
         return EXIT_SUCCESS;
     else {
-        for (const string& e : converter->Errors())
-            cerr << "ERROR: " << e << endl;
-        for (const string& e : xmlErrors)
-            cerr << "ERROR: " << e << endl;
+        for (const std::string& e : converter->Errors())
+            std::cerr << "ERROR: " << e << std::endl;
+        for (const std::string& e : xmlErrors)
+            std::cerr << "ERROR: " << e << std::endl;
         return EXIT_FAILURE;
     }
 }

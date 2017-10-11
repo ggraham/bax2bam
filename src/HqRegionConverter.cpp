@@ -10,7 +10,6 @@
 #include <set>
 #include <sstream>
 
-using namespace std;
 using namespace PacBio::BAM;
 
 HqRegionConverter::HqRegionConverter(Settings& settings)
@@ -27,7 +26,7 @@ bool HqRegionConverter::ConvertFile(HDFBasReader* reader,
 
 bool HqRegionConverter::ConvertFile(HDFBasReader* reader,
                                     PacBio::BAM::BamWriter* writer,
-                                    PacBio::BAM::BamWriter* scrapsWriter) 
+                                    PacBio::BAM::BamWriter* scrapsWriter)
 {
     assert(reader);
 
@@ -59,7 +58,7 @@ bool HqRegionConverter::ConvertFile(HDFBasReader* reader,
                             hqEnd,
                             score))
         {
-            stringstream s;
+            std::stringstream s;
             s << "could not find HQ region for hole number: " << smrtRecord.zmwData.holeNumber;
             AddErrorMessage(s.str());
             smrtRecord.Free();
@@ -179,14 +178,14 @@ bool HqRegionConverter::ConvertFile(HDFBasReader* reader,
     return true;
 }
 
-string HqRegionConverter::HeaderReadType(void) const
+std::string HqRegionConverter::HeaderReadType(void) const
 { return "HQREGION"; }
 
-string HqRegionConverter::ScrapsReadType(void) const
+std::string HqRegionConverter::ScrapsReadType(void) const
 { return "SCRAP"; }
 
-string HqRegionConverter::OutputFileSuffix(void) const
+std::string HqRegionConverter::OutputFileSuffix(void) const
 { return ".hqregions.bam"; }
 
-string HqRegionConverter::ScrapsFileSuffix(void) const
+std::string HqRegionConverter::ScrapsFileSuffix(void) const
 { return ".lqregions.bam"; }

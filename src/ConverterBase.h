@@ -114,7 +114,7 @@ protected:
     virtual bool IsSequencingZmw(const RecordType& record) const final;
 
     virtual bool LoadChemistryFromMetadataXML(const std::string& baxFn,
-                                              const std::string& movieName) final; 
+                                              const std::string& movieName) final;
 
     virtual std::string HeaderReadType(void) const =0;
     virtual std::string ScrapsReadType(void) const =0;
@@ -302,7 +302,6 @@ bool ConverterBase<RecordType, HdfReader>::ConvertRecord(
 {
     using namespace PacBio;
     using namespace PacBio::BAM;
-    using namespace std;
 
     // sanity check
     assert(bamRecord);
@@ -419,9 +418,9 @@ bool ConverterBase<RecordType, HdfReader>::ConvertRecord(
     if (HeaderReadType() != "CCS")
     {
         // Stored as 'ACGT' in BAM, no fixed order in SMRTSequence
-        vector<float> hqSnr = { smrtRead.HQRegionSnr('A'),
-                                smrtRead.HQRegionSnr('C'),   
-                                smrtRead.HQRegionSnr('G'),   
+        std::vector<float> hqSnr = { smrtRead.HQRegionSnr('A'),
+                                smrtRead.HQRegionSnr('C'),
+                                smrtRead.HQRegionSnr('G'),
                                 smrtRead.HQRegionSnr('T')};
         tags[Tag_sn] = hqSnr;
     }
@@ -711,10 +710,10 @@ void ConverterBase<RecordType, HdfReader>::AddRecordName(
         const int start,
         const int end)
 {
-    const string name = settings_.movieName + "/"
-                      + to_string(holeNumber) + "/"
-                      + to_string(start) + "_"
-                      + to_string(end);
+    const std::string name = settings_.movieName + "/"
+                      + std::to_string(holeNumber) + "/"
+                      + std::to_string(start) + "_"
+                      + std::to_string(end);
     bamRecord->Name(name);
 }
 
@@ -845,19 +844,18 @@ bool ConverterBase<RecordType, HdfReader>::Run(void)
 {
     using namespace PacBio;
     using namespace PacBio::BAM;
-    using namespace std;
 
-    set<string> movieNames;
+    std::set<std::string> movieNames;
 
     // initialize input BAX readers
     const auto baxEnd = settings_.inputBaxFilenames.cend();
     for (auto baxIter = settings_.inputBaxFilenames.cbegin(); baxIter != baxEnd; ++baxIter) {
-        const string& baxFn = (*baxIter);
+        const std::string& baxFn = (*baxIter);
         if (baxFn.empty())
             continue;
 
         HdfReader* reader = InitHdfReader();
-        
+
         // read in mandatory ReadGroupInfo from bax file
         if (reader->Initialize(baxFn) &&
             reader->scanDataReader.fileHasScanData &&
@@ -953,7 +951,7 @@ fallback:
     if (movieNames.size() != 1) {
         AddErrorMessage("multiple movies detected:");
         for (const auto m : movieNames)
-            AddErrorMessage(string("    ")+m);
+            AddErrorMessage(std::string("    ")+m);
         return false;
     }
     settings_.movieName = (*movieNames.cbegin());
@@ -993,14 +991,14 @@ fallback:
         PbiFile::CreateFrom(BamFile{ settings_.outputBamFilename });
         PbiFile::CreateFrom(BamFile{ settings_.scrapsBamFilename });
 
-    } else { 
+    } else {
 
         assert(settings_.scrapsBamFilename.empty());
 
         // main conversion of BAX -> BAM records for single-output jobs
         try {
             BamWriter writer(settings_.outputBamFilename, CreateHeader(HeaderReadType()));
-          
+
             for (HdfReader* reader : readers_) {
                 assert(reader);
                 if (!ConvertFile(reader, &writer))

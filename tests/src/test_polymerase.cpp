@@ -13,19 +13,19 @@
 #include <vector>
 #include <cstdio>
 #include <cstdlib>
-using namespace std;
+
 using namespace PacBio;
 using namespace PacBio::BAM;
 
 TEST(PolymeraseTest, EndToEnd_Single)
 {
     // setup
-    const string movieName = "m160823_221224_ethan_c010091942559900001800000112311890_s1_p0";
+    const std::string movieName = "m160823_221224_ethan_c010091942559900001800000112311890_s1_p0";
 
-    vector<string> baxFilenames;
+    std::vector<std::string> baxFilenames;
     baxFilenames.push_back(tests::Data_Dir + "/" + movieName + ".1.bax.h5");
 
-    const string generatedBam = movieName + ".polymerase.bam";
+    const std::string generatedBam = movieName + ".polymerase.bam";
 
     // run conversion
     const int result = RunBax2Bam(baxFilenames, "--polymeraseread");
@@ -47,11 +47,11 @@ TEST(PolymeraseTest, EndToEnd_Single)
     baxReader.IncludeField("SubstitutionQV");
     baxReader.IncludeField("HQRegionSNR");
     baxReader.IncludeField("WidthInFrames");
-    // not using SubTag 
+    // not using SubTag
 
-    string baxBasecallerVersion;
-    string baxBindingKit;
-    string baxSequencingKit;
+    std::string baxBasecallerVersion;
+    std::string baxBindingKit;
+    std::string baxSequencingKit;
 
     const int initOk = baxReader.Initialize(baxFilenames.front());
     EXPECT_EQ(1, initOk);
@@ -88,22 +88,22 @@ TEST(PolymeraseTest, EndToEnd_Single)
         // check BAM header information
         const BamHeader& header = bamFile.Header();
         EXPECT_EQ(tests::Header_Version,     header.Version());
-        EXPECT_EQ(string("unknown"), header.SortOrder());
+        EXPECT_EQ(std::string("unknown"), header.SortOrder());
         EXPECT_EQ(tests::PacBioBam_Version,  header.PacBioBamVersion());
         EXPECT_TRUE(header.Sequences().empty());
         EXPECT_TRUE(header.Comments().empty());
         ASSERT_FALSE(header.Programs().empty());
 
-        const vector<string> readGroupIds = header.ReadGroupIds();
+        const std::vector<std::string> readGroupIds = header.ReadGroupIds();
         ASSERT_FALSE(readGroupIds.empty());
         const ReadGroupInfo& rg = header.ReadGroup(readGroupIds.front());
 
-        string rawId = movieName + "//POLYMERASE";
-        string md5Id;
+        std::string rawId = movieName + "//POLYMERASE";
+        std::string md5Id;
         MakeMD5(rawId, md5Id, 8);
         EXPECT_EQ(md5Id, rg.Id());
 
-        EXPECT_EQ(string("PACBIO"), rg.Platform());
+        EXPECT_EQ(std::string("PACBIO"), rg.Platform());
         EXPECT_EQ(movieName, rg.MovieName());
 
         EXPECT_TRUE(rg.SequencingCenter().empty());
@@ -134,12 +134,12 @@ TEST(PolymeraseTest, EndToEnd_Single)
         SMRTSequence baxRecord;
         EXPECT_TRUE(baxReader.GetReadAt(8, baxRecord) > 0);
 
-        vector<float> hqSnr;
+        std::vector<float> hqSnr;
         hqSnr.push_back(baxRecord.HQRegionSnr('A'));
         hqSnr.push_back(baxRecord.HQRegionSnr('C'));
         hqSnr.push_back(baxRecord.HQRegionSnr('G'));
         hqSnr.push_back(baxRecord.HQRegionSnr('T'));
- 
+
         EXPECT_FLOAT_EQ(0.0, hqSnr[0]);
         EXPECT_FLOAT_EQ(0.0, hqSnr[1]);
         EXPECT_FLOAT_EQ(0.0, hqSnr[2]);
@@ -166,10 +166,10 @@ TEST(PolymeraseTest, EndToEnd_Single)
             const int subreadStart  = 0;
             const int subreadEnd    = baxRecord.length;
 
-            const string expectedName = movieName + "/" +
-                    to_string(holeNumber)   + "/" +
-                    to_string(subreadStart) + "_" +
-                    to_string(subreadEnd);
+            const std::string expectedName = movieName + "/" +
+                    std::to_string(holeNumber)   + "/" +
+                    std::to_string(subreadStart) + "_" +
+                    std::to_string(subreadEnd);
             EXPECT_EQ(expectedName, bamRecordImpl.Name());
 
             using PacBio::BAM::QualityValue;
@@ -177,10 +177,10 @@ TEST(PolymeraseTest, EndToEnd_Single)
 
             const DNALength length = subreadEnd - subreadStart;
 
-            string expectedSequence;
+            std::string expectedSequence;
             expectedSequence.assign((const char*)baxRecord.seq + subreadStart, length);
 
-            const string bamSequence = bamRecord.Sequence();
+            const std::string bamSequence = bamRecord.Sequence();
             const QualityValues bamQualities = bamRecord.Qualities();
             EXPECT_EQ(expectedSequence, bamSequence);
             EXPECT_TRUE(bamQualities.empty());
@@ -201,19 +201,19 @@ TEST(PolymeraseTest, EndToEnd_Single)
 
             if (baxRecord.deletionTag)
             {
-                string expectedDeletionTags;
+                std::string expectedDeletionTags;
                 expectedDeletionTags.assign((char*)baxRecord.deletionTag + subreadStart,
                                             (char*)baxRecord.deletionTag + subreadStart + length);
-                const string& bamDeletionTags = bamRecord.DeletionTag();
+                const std::string& bamDeletionTags = bamRecord.DeletionTag();
                 EXPECT_EQ(expectedDeletionTags, bamDeletionTags);
             }
 
             if (baxRecord.substitutionTag)
             {
-                string expectedSubstitutionTags;
+                std::string expectedSubstitutionTags;
                 expectedSubstitutionTags.assign((char*)baxRecord.substitutionTag + subreadStart,
                                             (char*)baxRecord.substitutionTag + subreadStart + length);
-                const string& bamSubstitutionTags = bamRecord.SubstitutionTag();
+                const std::string& bamSubstitutionTags = bamRecord.SubstitutionTag();
                 EXPECT_EQ(expectedSubstitutionTags, bamSubstitutionTags);
             }
 
