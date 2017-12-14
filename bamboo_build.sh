@@ -9,21 +9,21 @@ ln -sfn googletest-release-1.7.0 gtest
 
 set +x
 type module >& /dev/null || . /mnt/software/Modules/current/init/bash
-module load git/2.8.3
-module load gcc/6.4.0
-module load ccache/3.3.4
+module load git
+module load gcc
+module load ccache
 [[ $USER == "bamboo" ]] && export CCACHE_DIR=/mnt/secondary/Share/tmp/bamboo.mobs.ccachedir || true
-module load boost/1.60
+module load boost
 if [[ $BOOST_ROOT =~ /include ]]; then
   set -x
   BOOST_ROOT=$(dirname $BOOST_ROOT)
   set +x
 fi
-module load ninja/1.7.1
-module load cmake/3.7.2
-module load zlib/1.2.11
-module load hdf5-tools/1.8.19
-module load htslib/1.5
+module load ninja
+module load cmake
+module load zlib
+module load hdf5-tools
+module load htslib
 set -x
 
 cd pbbam
