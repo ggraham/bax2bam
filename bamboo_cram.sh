@@ -1,11 +1,11 @@
 #!/bin/bash
 
 type module >& /dev/null || . /mnt/software/Modules/current/init/bash
-module load gcc/6.4.0
-module load hdf5-tools/1.8.19
-module load zlib/1.2.11
-module load htslib/1.5
-module load cram/0.7
+module load gcc
+module load hdf5-tools
+module load zlib
+module load htslib
+module load cram
 
 PATH=$PWD/bax2bam/bin:$PATH
 LD_LIBRARY_PATH=$PWD/blasr_libcpp/alignment:$LD_LIBRARY_PATH
