@@ -3,7 +3,6 @@ include_directories(
     ${BLASR_INCLUDE_DIRS}
     ${Boost_INCLUDE_DIRS}
     ${HDF5_INCLUDE_DIRS}
-    ${HTSLIB_INCLUDE_DIRS}
     ${PacBioBAM_INCLUDE_DIRS}
     ${PBDATA_INCLUDE_DIRS}
     ${PBDATA_ROOT_DIR}
@@ -31,10 +30,7 @@ set(SOURCES
     SubreadConverter.h
     SubreadConverter.cpp
 )
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Bax2Bam_CXX_FLAGS}")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${Bax2Bam_EXE_LINKER_FLAGS}")
-
+add_compile_options("${HTSLIB_CFLAGS}")
 
 add_executable(bax2bam ${SOURCES})
 set_target_properties(bax2bam PROPERTIES
@@ -44,15 +40,17 @@ if (NOT APPLE)
     set(MY_LIBRT -lrt)
 else()
 endif()
-target_link_libraries(bax2bam 
+target_link_libraries(bax2bam
+    ${Bax2Bam_EXE_LINKER_FLAGS}
+
     ${PBBAM_LINK_FLAG}
     ${BLASR_LIBRARIES}
     ${PBIHDF_LIBRARIES}
-    ${PBDATA_LIBRARIES} 
+    ${PBDATA_LIBRARIES}
     ${HDF5_CPP_LIBRARIES}
     ${HDF5_LIBRARIES}
     ${PacBioBAM_LIBRARIES}
-    ${HTSLIB_LIBRARIES}
+    ${HTSLIB_LDFLAGS}
     ${ZLIB_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
     ${MY_LIBRT}
