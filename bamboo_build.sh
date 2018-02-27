@@ -42,8 +42,8 @@ python configure.py \
    PBBAM_INC=$PWD/../pbbam/include \
    PBBAM_LIB=$PWD/../pbbam/build/lib \
    BOOST_INC=$BOOST_ROOT/include \
-  HTSLIB_INC=$(pkg-config --variable includedir htslib) \
-  HTSLIB_LIB=$(pkg-config --variable libdir htslib)
+HTSLIB_CFLAGS=$(pkg-config --cflags htslib) \
+  HTSLIB_LIBS=$(pkg-config --libs htslib)
 make -j libpbdata LDLIBS=-lpbbam
 make -j libpbihdf
 make -j libblasr
@@ -58,10 +58,8 @@ cmake \
               -DHDF5_RootDir=$(pkg-config --libs-only-L hdf5|awk '{print $1}'|sed -e 's/^-L//'|xargs dirname) \
     -DPacBioBAM_INCLUDE_DIRS=$PWD/../../pbbam/include \
        -DPacBioBAM_LIBRARIES=$PWD/../../pbbam/build/lib/libpbbam.a \
-       -DHTSLIB_INCLUDE_DIRS=$(pkg-config --cflags-only-I htslib|awk '{print $1}'|sed -e 's/^-I//') \
-          -DHTSLIB_LIBRARIES=$(pkg-config --libs-only-L htslib|awk '{print $1}'|sed -e 's/^-L//')/libhts.a \
              -DGTEST_SRC_DIR=$PWD/../../gtest \
-            -DZLIB_LIBRARIES=$ZLIB_ROOT/lib/libz.a \
+            -DZLIB_LIBRARIES=$ZLIB_ROOT/lib/libz.so \
          -DZLIB_INCLUDE_DIRS=$ZLIB_ROOT/include \
         -DBLASR_INCLUDE_DIRS=$PWD/../../blasr_libcpp/alignment \
        -DPBIHDF_INCLUDE_DIRS=$PWD/../../blasr_libcpp/hdf \
@@ -71,4 +69,4 @@ cmake \
           -DPBDATA_LIBRARIES=$PWD/../../blasr_libcpp/pbdata/libpbdata.a \
   ..
 set -x
-make
+make VERBOSE=1

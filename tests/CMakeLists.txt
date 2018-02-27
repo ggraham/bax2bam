@@ -10,16 +10,17 @@ include_directories(
     ${BLASR_INCLUDE_DIRS}
     ${Boost_INCLUDE_DIRS}
     ${HDF5_INCLUDE_DIRS}
-    ${HTSLIB_INCLUDE_DIRS}
     ${PacBioBAM_INCLUDE_DIRS}
     ${PBDATA_INCLUDE_DIRS}
     ${PBDATA_ROOT_DIR}
     ${PBIHDF_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIRS}
-    ${gtest_SOURCE_DIR}/include 
+    ${gtest_SOURCE_DIR}/include
     ${gtest_SOURCE_DIR}
 #    ${Bax2BamTest_H}
 )
+add_compile_options("${HTSLIB_CFLAGS}")
+
 
 # Grab postprimary test source files
 
@@ -30,32 +31,29 @@ set(SOURCES
 
 # shared CXX flags for src & tests
 include(CheckCXXCompilerFlag)
-set(Bax2Bam_CXX_FLAGS "-g -std=c++11 -Wall")
 
 # quash warnings from pbdata
 check_cxx_compiler_flag("-Wno-overloaded-virtual" HAS_NO_OVERLOADED_VIRTUAL)
 if(HAS_NO_OVERLOADED_VIRTUAL)
-    set(Bax2Bam_CXX_FLAGS "${Bax2Bam_CXX_FLAGS} -Wno-overloaded-virtual")
+    add_compile_options("-Wno-overloaded-virtual")
 endif()
 check_cxx_compiler_flag("-Wno-unused-private-field" HAS_NO_UNUSED_PRIVATE_FIELD)
 if(HAS_NO_UNUSED_PRIVATE_FIELD)
-    set(Bax2Bam_CXX_FLAGS "${Bax2Bam_CXX_FLAGS} -Wno-unused-private-field")
+    add_compile_options("-Wno-unused-private-field")
 endif()
 check_cxx_compiler_flag("-Wno-unused-variable" HAS_NO_UNUSED_VARIABLE)
 if(HAS_NO_UNUSED_VARIABLE)
-    set(Bax2Bam_CXX_FLAGS "${Bax2Bam_CXX_FLAGS} -Wno-unused-variable")
+    add_compile_options("-Wno-unused-variable")
 endif()
 check_cxx_compiler_flag("-Wno-uninitialized" HAS_NO_UNINITIALIZED)
 if(HAS_NO_UNINITIALIZED)
-    set(Bax2Bam_CXX_FLAGS "${Bax2Bam_CXX_FLAGS} -Wno-uninitialized")
+    add_compile_options("-Wno-uninitialized")
 endif()
 # NOTE: -Wno-unused-local-typedefs used to quash clang warnings w/ Boost
 check_cxx_compiler_flag("-Wno-unused-local-typedef" HAS_NO_UNUSED_LOCAL_TYPEDEF)
 if(HAS_NO_UNUSED_LOCAL_TYPEDEF)
-    set(Bam2Bax_CXX_FLAGS "${Bax2Bam_CXX_FLAGS} -Wno-unused-local-typedef")
+    add_compile_options("-Wno-unused-local-typedef")
 endif()
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${Bax2Bam_CXX_FLAGS}")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${Bax2Bam_EXE_LINKER_FLAGS}")
 
 add_executable(test_bax2bam ${SOURCES})
 # add_executable(test_bax2bam ${Bax2Bam_TestsDir}/src/test_ccs.cpp)
@@ -67,16 +65,18 @@ if (NOT APPLE)
 else()
 endif()
 target_link_libraries(test_bax2bam
+    ${Bax2Bam_EXE_LINKER_FLAGS}
+
     gtest
     gtest_main
     ${PBBAM_LINK_FLAG}
     ${BLASR_LIBRARIES}
     ${PBIHDF_LIBRARIES}
-    ${PBDATA_LIBRARIES} 
+    ${PBDATA_LIBRARIES}
     ${HDF5_CPP_LIBRARIES}
     ${HDF5_LIBRARIES}
     ${PacBioBAM_LIBRARIES}
-    ${HTSLIB_LIBRARIES}
+    ${HTSLIB_LDFLAGS}
     ${ZLIB_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT} # quirky pthreads
     ${MY_LIBRT}
