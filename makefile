@@ -12,9 +12,7 @@ all: ${CURDIR}/src/* ${CURDIR}/tests/src/*
 	 cd ${CURDIR}/build && \
 		cmake -DBOOST_ROOT=${BOOST_ROOT} \
           -DPacBioBAM_INCLUDE_DIRS=${PBBAM_INC} \
-          -DHTSLIB_INCLUDE_DIRS=${HTSLIB_INC} \
           -DPacBioBAM_LIBRARIES=${PBBAM_LIB}/libpbbam${SH_LIB_EXT} \
-          -DHTSLIB_LIBRARIES=${HTSLIB_LIB}/libhts${SH_LIB_EXT} \
           -DPBDATA_INCLUDE_DIRS=${LIBPBDATA_INC} \
           -DPBDATA_LIBRARIES=${LIBPBDATA_LIB}/libpbdata${SH_LIB_EXT} \
           -DPBIHDF_INCLUDE_DIRS=${LIBPBIHDF_INC} \

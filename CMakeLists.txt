@@ -63,14 +63,19 @@ if (NOT HDF5_INCLUDE_DIRS OR NOT HDF5_LIBRARIES)
     find_library(HDF5_CPP_LIBRARIES hdf5_cpp ${HDF5_LibDir} NO_CMAKE_SYSTEM_PATH)
 endif()
 
-if (NOT PacBioBAM_INCLUDE_DIRS OR NOT PacBioBAM_LIBRARIES
-    OR NOT HTSLIB_INCLUDE_DIRS OR NOT HTSLIB_LIBRARIES)
+find_package(PkgConfig REQUIRED)
+
+# htslib
+pkg_check_modules(HTSLIB REQUIRED htslib)
+message(STATUS "   HTSLIB compile arguments: ${HTSLIB_CFLAGS}")
+message(STATUS "   HTSLIB link arguments:    ${HTSLIB_LDFLAGS}")
+
+# pbbam
+if (NOT PacBioBAM_INCLUDE_DIRS OR NOT PacBioBAM_LIBRARIES)
     set(PacBioBAM_INCLUDE_DIRS )
     set(PacBioBAM_LIBRARIES )
-    set(HTSLIB_INCLUDE_DIRS )
-    set(HTSLIB_LIBRARIES )
     if (NOT PacBioBAM_RootDir)
-        message ("Must either set (PacBioBAM_INCLUDE_DIRS, PacBioBAM_LIBRARIES, HTSLIB_INCLUDE_DIRS, and HTSLIB_LIBRARIES) or PacBioBAM_RootDir!")
+        message ("Must either set (PacBioBAM_INCLUDE_DIRS, PacBioBAM_LIBRARIES) or PacBioBAM_RootDir!")
     endif()
     add_subdirectory(${PacBioBAM_RootDir} external/build/pbbam)
     set(PBBAM_LINK_FLAG pbbam)
@@ -88,36 +93,38 @@ find_package(Threads)
 
 # shared CXX flags for src & tests
 include(CheckCXXCompilerFlag)
-set(Bax2Bam_CXX_FLAGS "-g -std=c++11 -Wall")
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+add_compile_options("-Wall")
 
 # quash warnings from pbdata
 check_cxx_compiler_flag("-Wno-overloaded-virtual" HAS_NO_OVERLOADED_VIRTUAL)
 if(HAS_NO_OVERLOADED_VIRTUAL)
-    set(Bax2Bam_CXX_FLAGS "${Bax2Bam_CXX_FLAGS} -Wno-overloaded-virtual")
+    add_compile_options("-Wno-overloaded-virtual")
 endif()
 #check_cxx_compiler_flag("-Wno-unused-private-field" HAS_NO_UNUSED_PRIVATE_FIELD)
 #if(HAS_NO_UNUSED_PRIVATE_FIELD)
-#    set(Bax2Bam_CXX_FLAGS "${Bax2Bam_CXX_FLAGS} -Wno-unused-private-field")
+#    add_compile_options("-Wno-unused-private-field")
 #endif()
 check_cxx_compiler_flag("-Wno-unused-variable" HAS_NO_UNUSED_VARIABLE)
 if(HAS_NO_UNUSED_VARIABLE)
-    set(Bax2Bam_CXX_FLAGS "${Bax2Bam_CXX_FLAGS} -Wno-unused-variable")
+    add_compile_options("-Wno-unused-variable")
 endif()
 check_cxx_compiler_flag("-Wno-uninitialized" HAS_NO_UNINITIALIZED)
 if(HAS_NO_UNINITIALIZED)
-    set(Bax2Bam_CXX_FLAGS "${Bax2Bam_CXX_FLAGS} -Wno-uninitialized")
+    add_compile_options("-Wno-uninitialized")
 endif()
 check_cxx_compiler_flag("-Wno-deprecated-declarations" HAS_NO_DEPRECATED_DECLARATIONS)
 if(HAS_NO_DEPRECATED_DECLARATIONS)
-    set(Bax2Bam_CXX_FLAGS "${Bax2Bam_CXX_FLAGS} -Wno-deprecated-declarations")
+    add_compile_options("-Wno-deprecated-declarations")
 endif()
 # NOTE: -Wno-unused-local-typedefs used to quash clang warnings w/ Boost
 check_cxx_compiler_flag("-Wno-unused-local-typedef" HAS_NO_UNUSED_LOCAL_TYPEDEF)
 if(HAS_NO_UNUSED_LOCAL_TYPEDEF)
-    set(Bax2Bam_CXX_FLAGS "${Bax2Bam_CXX_FLAGS} -Wno-unused-local-typedef")
+    add_compile_options("-Wno-unused-local-typedef")
 endif()
-
-SET(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${BAX2BAM_LINKER_FLAGS}" )
 
 # main exe src
 add_subdirectory(src)
@@ -126,7 +133,7 @@ add_subdirectory(src)
 if(Bax2BAM_build_tests)
 
     enable_testing()
-    
+
     if (NOT GTEST_SRC_DIR)
         set(GTEST_SRC_DIR ../gtest)
     endif()
