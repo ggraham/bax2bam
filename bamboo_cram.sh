@@ -8,9 +8,7 @@ module load htslib
 module load cram
 
 PATH=$PWD/bax2bam/bin:$PATH
-LD_LIBRARY_PATH=$PWD/blasr_libcpp/alignment:$LD_LIBRARY_PATH
-LD_LIBRARY_PATH=$PWD/blasr_libcpp/hdf:$LD_LIBRARY_PATH
-LD_LIBRARY_PATH=$PWD/blasr_libcpp/pbdata:$LD_LIBRARY_PATH
+LD_LIBRARY_PATH=$PWD/prebuilt/lib:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH PATH
 export BAX2BAM=`which bax2bam`
 
