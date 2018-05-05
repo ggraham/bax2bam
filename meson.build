@@ -5,9 +5,10 @@ project(
   default_options : [
     'buildtype=release',
     'warning_level=3',
-    'cpp_std=c++14'],
+    'cpp_std=c++11',
+    'b_ndebug=if-release'],
   license : 'BSD-3',
-  meson_version : '>= 0.41.1')
+  meson_version : '>= 0.46.0')
 
 ############
 # CXXFLAGS #
@@ -28,22 +29,16 @@ endforeach
 # dependencies #
 ################
 
-# HDF5
-libhdf5_cflags = []
-if get_option('HDF5_CFLAGS') != ''
-  libhdf5_cflags = get_option('HDF5_CFLAGS').split(' ')
-endif
-
-libhdf5_libs = []
-if get_option('HDF5_LIBS') != ''
-  libhdf5_libs = get_option('HDF5_LIBS').split(' ')
-endif
-
 # boost
 bax2bam_boost_dep = dependency('boost', required : true)
 
 # libblasr
 bax2bam_libblasr_dep = dependency('libblasr', fallback : ['blasr_libcpp', 'libblasr_dep'])
+
+# zlib
+bax2bam_zlib_dep = dependency('zlib', required : true)
+
+bax2bam_deps = [bax2bam_boost_dep, bax2bam_libblasr_dep, bax2bam_zlib_dep]
 
 ########################
 # sources + executable #
@@ -64,14 +59,13 @@ bax2bam_exe = executable(
   'bax2bam',
   bax2bam_sources,
   install : true,
-  dependencies : [bax2bam_libblasr_dep, bax2bam_boost_dep],
-  cpp_args : [libhdf5_cflags, bax2bam_warning_flags],
-  link_args : libhdf5_libs)
+  dependencies : bax2bam_deps,
+  cpp_args : bax2bam_warning_flags)
 
 #########
 # tests #
 #########
 
-if get_option('enable-bax2bam-tests')
+if get_option('tests')
   subdir('tests')
 endif
