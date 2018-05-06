@@ -3,9 +3,10 @@
 #ifndef CCSCONVERTER_H
 #define CCSCONVERTER_H
 
+#include <hdf/HDFCCSReader.hpp>
+#include <pbdata/CCSSequence.hpp>
+
 #include "ConverterBase.h"
-#include "CCSSequence.hpp"
-#include "HDFCCSReader.hpp"
 
 class CcsConverter : public ConverterBase<CCSSequence, HDFCCSReader<CCSSequence>>
 {

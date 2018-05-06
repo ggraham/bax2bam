@@ -3,13 +3,15 @@
 #ifndef ICONVERTER_H
 #define ICONVERTER_H
 
-#include "Settings.h"
-#include "SMRTSequence.hpp"
-#include <pbbam/BamHeader.h>
-#include <pbbam/BamWriter.h>
 #include <map>
 #include <string>
 #include <vector>
+
+#include <pbbam/BamHeader.h>
+#include <pbbam/BamWriter.h>
+#include <pbdata/SMRTSequence.hpp>
+
+#include "Settings.h"
 
 namespace PacBio {
 namespace BAM {

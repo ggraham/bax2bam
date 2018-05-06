@@ -2,13 +2,15 @@
 
 #include "HqRegionConverter.h"
 
-#include "utils/RegionUtils.hpp"
-#include "HDFRegionTableReader.hpp"
-#include <pbbam/BamRecord.h>
-#include <pbbam/BamWriter.h>
 #include <memory>
 #include <set>
 #include <sstream>
+
+#include <pbbam/BamRecord.h>
+#include <pbbam/BamWriter.h>
+
+#include <alignment/utils/RegionUtils.hpp>
+#include <hdf/HDFRegionTableReader.hpp>
 
 using namespace PacBio::BAM;
 

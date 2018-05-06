@@ -1,16 +1,16 @@
 // Author: Derek Barnett
 
-
 #include "SubreadConverter.h"
-#include "utils/RegionUtils.hpp"
-#include "HDFRegionTableReader.hpp"
-
-#include <pbbam/BamRecord.h>
-#include <pbbam/BamWriter.h>
 
 #include <algorithm>
 #include <deque>
 #include <memory>
+
+#include <pbbam/BamRecord.h>
+#include <pbbam/BamWriter.h>
+
+#include <alignment/utils/RegionUtils.hpp>
+#include <hdf/HDFRegionTableReader.hpp>
 
 #define MAX( A, B )     ( (A)>(B) ? (A) : (B) )
 #define MAX3( A, B, C ) MAX( MAX( A, B ), C )

@@ -1,20 +1,23 @@
 // Author: Derek Barnett
 
-#include "TestData.h"
-#include "TestUtils.h"
-
-#include "CCSSequence.hpp"
-#include "HDFCCSReader.hpp"
-#include <gtest/gtest.h>
-#include <pbbam/BamFile.h>
-#include <pbbam/BamRecord.h>
-#include <pbbam/EntireFileQuery.h>
 #include <memory>
 #include <string>
 #include <vector>
 #include <cstdio>
 #include <cstdlib>
 #include <algorithm>
+
+#include <gtest/gtest.h>
+
+#include <pbbam/BamFile.h>
+#include <pbbam/BamRecord.h>
+#include <pbbam/EntireFileQuery.h>
+
+#include <pbdata/CCSSequence.hpp>
+#include <hdf/HDFCCSReader.hpp>
+
+#include "TestData.h"
+#include "TestUtils.h"
 
 using namespace PacBio;
 using namespace PacBio::BAM;
