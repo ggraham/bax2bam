@@ -1,20 +1,23 @@
 // Author: Derek Barnett
 
-#include "TestData.h"
-#include "TestUtils.h"
-
-#include "HDFBasReader.hpp"
-#include "utils/RegionUtils.hpp"
-#include "HDFRegionTableReader.hpp"
-#include <gtest/gtest.h>
-#include <pbbam/BamFile.h>
-#include <pbbam/BamRecord.h>
-#include <pbbam/EntireFileQuery.h>
 #include <memory>
 #include <string>
 #include <vector>
 #include <cstdio>
 #include <cstdlib>
+
+#include <gtest/gtest.h>
+
+#include <pbbam/BamFile.h>
+#include <pbbam/BamRecord.h>
+#include <pbbam/EntireFileQuery.h>
+
+#include <alignment/utils/RegionUtils.hpp>
+#include <hdf/HDFBasReader.hpp>
+#include <hdf/HDFRegionTableReader.hpp>
+
+#include "TestData.h"
+#include "TestUtils.h"
 
 using namespace PacBio;
 using namespace PacBio::BAM;

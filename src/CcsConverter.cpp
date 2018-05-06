@@ -1,15 +1,15 @@
 // Author: Derek Barnett
 
-#include <iostream>
-
 #include "CcsConverter.h"
 
-#include "utils/RegionUtils.hpp"
-#include "HDFRegionTableReader.hpp"
+#include <algorithm>
+#include <iostream>
 
 #include <pbbam/BamRecord.h>
 #include <pbbam/BamWriter.h>
-#include <algorithm>
+
+#include <alignment/utils/RegionUtils.hpp>
+#include <hdf/HDFRegionTableReader.hpp>
 
 using namespace PacBio;
 using namespace PacBio::BAM;

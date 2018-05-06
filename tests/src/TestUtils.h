@@ -1,9 +1,11 @@
 // Author: Derek Barnett
 
-#include "SMRTSequence.hpp"
-#include <pbbam/BamRecord.h>
 #include <string>
 #include <vector>
+
+#include <pbbam/BamRecord.h>
+
+#include <pbdata/SMRTSequence.hpp>
 
 void RemoveFile(const std::string& filename);
 void RemoveFiles(const std::vector<std::string>& filenames);
