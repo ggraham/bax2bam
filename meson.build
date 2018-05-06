@@ -25,6 +25,15 @@ foreach cflag: [
     endif
 endforeach
 
+if cpp.get_id() == 'clang'
+  foreach cflag: [
+    '-Wno-overloaded-virtual']
+      if cpp.has_argument(cflag)
+        bax2bam_warning_flags += cflag
+      endif
+  endforeach
+endif
+
 ################
 # dependencies #
 ################
