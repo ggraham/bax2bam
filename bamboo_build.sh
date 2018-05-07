@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-set -e
+set -vex
 
-echo "################"
-echo "# DEPENDENCIES #"
-echo "################"
+################
+# DEPENDENCIES #
+################
 
-echo "## Load modules"
+## Load modules
 type module >& /dev/null || . /mnt/software/Modules/current/init/bash
 
 module purge
@@ -20,7 +20,15 @@ module load boost
 module load gtest
 module load cram
 
-module load libblasr
+case "${bamboo_planRepository_branchName}" in
+  master)
+    module load libblasr/master
+    ;;
+  *)
+    module load libblasr/develop
+    ;;
+esac
+
 
 BOOST_ROOT="${BOOST_ROOT%/include}"
 # unset these variables to have meson discover all
@@ -37,29 +45,14 @@ if [[ $USER == bamboo ]]; then
   export CCACHE_TEMPDIR=/scratch/bamboo.ccache_tempdir
 fi
 
+# call the main build+test scripts
+export CURRENT_BUILD_DIR="build"
+export ENABLED_TESTS="true"
 
-echo "#########"
-echo "# BUILD #"
-echo "#########"
+# TODO(dseifert)
+# HDF5 doesn't have pkg-config files yet
+export CPPFLAGS="${HDF5_CFLAGS}"
+export LDFLAGS="-static-libstdc++ -static-libgcc ${HDF5_LIBS}"
 
-CURRENT_BUILD_DIR="build"
-
-# 1. configure
-# '--wrap-mode nofallback' prevents meson from downloading
-# stuff from the internet or using subprojects.
-echo "## Configuring source (${CURRENT_BUILD_DIR})"
-CPPFLAGS="${HDF5_CFLAGS}" \
-LDFLAGS="${HDF5_LIBS}" \
-  meson \
-    --wrap-mode nofallback \
-    --strip \
-    -Dtests=true \
-    "${CURRENT_BUILD_DIR}" .
-
-# 2. build
-echo "## Building source (${CURRENT_BUILD_DIR})"
-ninja -C "${CURRENT_BUILD_DIR}" -v
-
-# 3. tests
-echo "## Tests (${CURRENT_BUILD_DIR})"
-ninja -C "${CURRENT_BUILD_DIR}" -v test
+bash scripts/ci/build.sh
+bash scripts/ci/test.sh
