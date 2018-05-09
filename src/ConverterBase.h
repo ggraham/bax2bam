@@ -3,24 +3,29 @@
 #ifndef CONVERTERBASE_H
 #define CONVERTERBASE_H
 
-#include "IConverter.h"
-#include "Settings.h"
-#include "HDFBasReader.hpp"
-#include <pbbam/BamFile.h>
-#include <pbbam/BamHeader.h>
-#include <pbbam/BamWriter.h>
-#include <pbbam/PbiFile.h>
-#include <pbbam/ReadGroupInfo.h>
-#include <pbbam/Tag.h>
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/xml_parser.hpp>
-#include <libgen.h>
 #include <cstdlib>
 #include <climits>
 #include <map>
 #include <set>
 #include <string>
 #include <vector>
+
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/xml_parser.hpp>
+
+#include <pbbam/BamFile.h>
+#include <pbbam/BamHeader.h>
+#include <pbbam/BamWriter.h>
+#include <pbbam/PbiFile.h>
+#include <pbbam/ReadGroupInfo.h>
+#include <pbbam/Tag.h>
+
+#include <hdf/HDFBasReader.hpp>
+
+#include <libgen.h>
+
+#include "IConverter.h"
+#include "Settings.h"
 
 namespace PacBio {
 namespace BAM {

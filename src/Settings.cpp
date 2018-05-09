@@ -2,10 +2,14 @@
 
 #include "Settings.h"
 #include "OptionParser.h"
-#include <boost/algorithm/string.hpp>
-#include <HDFNewBasReader.hpp>
-#include <pbbam/DataSet.h>
+
 #include <sstream>
+
+#include <boost/algorithm/string.hpp>
+
+#include <pbbam/DataSet.h>
+
+#include <hdf/HDFNewBasReader.hpp>
 
 namespace internal {
 
