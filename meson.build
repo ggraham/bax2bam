@@ -1,7 +1,7 @@
 project(
   'bax2bam',
   'cpp',
-  version : '0.0.8',
+  version : '0.0.9',
   default_options : [
     'buildtype=release',
     'warning_level=3',
