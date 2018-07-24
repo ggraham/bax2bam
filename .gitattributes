@@ -1,0 +1,6 @@
+.gitattributes export-ignore
+.gitignore export-ignore
+
+# Bamboo cruft
+bamboo_build.sh export-ignore
+/scripts export-ignore
