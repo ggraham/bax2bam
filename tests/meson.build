@@ -33,20 +33,21 @@ bax2bam_unit_test = executable(
   cpp_args : bax2bam_warning_flags)
 
 test(
-  'bax2bam unit tests',
+  'bax2bam gtest unittests',
   bax2bam_unit_test,
   args : [
-    '--gtest_output=xml:' + join_paths(meson.build_root(), 'bax2bam_results.xml')],
-  workdir : meson.source_root(),
+    '--gtest_output=xml:' + join_paths(meson.build_root(), 'bax2bam-gtest-unittests.xml')],
+  env : [
+    'ARGS=-V',
+    'VERBOSE=1'],
   timeout : 3600)
 
 test(
   'bax2bam cram tests',
   bax2bam_cram_script,
   args : [
-    '--xunit-file=' + join_paths(meson.build_root(), 'bax2bam-cram_xunit.xml'),
-    '--verbose',
-    files(['bax2bam.t'])],
+    '--xunit-file=' + join_paths(meson.build_root(), 'bax2bam-cram-tests.xml'),
+    '--verbose'] + files('bax2bam.t'),
   env : [
     'BAX2BAM=' + bax2bam_exe.full_path()],
   timeout : 3600)
