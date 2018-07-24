@@ -1,4 +1,8 @@
-bax2bam_cram_script = find_program('cram')
+bax2bam_cram_script = find_program('cram', required : false)
+if not bax2bam_cram_script.found()
+  warning('Using bundled cram script')
+  bax2bam_cram_script = find_program('scripts/cram.py', required : true)
+endif
 
 bax2bam_gtest_dep = dependency('gtest_main', fallback : ['gtest', 'gtest_main_dep'])
 

@@ -1,6 +1,10 @@
 .DS_Store
 build/
 
+# python bytecode cruft from bundled cram script
+__pycache__/
+*.pyc
+
 # Meson WrapDB stuff
 subprojects/packagecache/
 subprojects/blasr_libcpp*
