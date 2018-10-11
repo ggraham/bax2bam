@@ -107,7 +107,6 @@ TEST(HqRegionsTest, EndToEnd_Single)
 
         // check BAM header information
         const BamHeader& header = bamFile.Header();
-        EXPECT_EQ(std::string(tests::Header_Version),     header.Version());
         EXPECT_EQ(std::string("unknown"), header.SortOrder());
         EXPECT_EQ(std::string(tests::PacBioBam_Version),   header.PacBioBamVersion());
         EXPECT_TRUE(header.Sequences().empty());
@@ -264,7 +263,6 @@ TEST(HqRegionsTest, EndToEnd_Single)
 
         // check BAM header information
         const BamHeader& header = bamFile.Header();
-        EXPECT_EQ(tests::Header_Version,     header.Version());
         EXPECT_EQ(std::string("unknown"), header.SortOrder());
         EXPECT_EQ(tests::PacBioBam_Version,   header.PacBioBamVersion());
         EXPECT_TRUE(header.Sequences().empty());

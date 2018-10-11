@@ -201,7 +201,6 @@ TEST(SubreadsTest, EndToEnd_Multiple)
 
         // check BAM header information
         const BamHeader& header = bamFile.Header();
-        EXPECT_EQ(tests::Header_Version,     header.Version());
         EXPECT_EQ(std::string("unknown"), header.SortOrder());
         EXPECT_EQ(tests::PacBioBam_Version,  header.PacBioBamVersion());
         EXPECT_TRUE(header.Sequences().empty());

@@ -1,4 +1,15 @@
-# bax2bam
+<h1 align="center"><img src="http://www.pacb.com/wp-content/themes/pacific-biosciences/img/pacific-biosciences-logo-mobile.svg"/></h1>
+<h1 align="center">bax2bam</h1>
+<p align="center">bax2bam converts the legacy PacBio basecall format (bax.h5) into the BAM
+basecall format</p>
+
+***
+
+## Availability
+Latest version can be installed via bioconda package `bax2bam`.
+
+Please refer to our [official pbbioconda page](https://github.com/PacificBiosciences/pbbioconda)
+for information on Installation, Support, License, Copyright, and Disclaimer.
 
 ## Command-line interface
 
