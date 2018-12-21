@@ -91,7 +91,6 @@ TEST(PolymeraseTest, EndToEnd_Single)
         // check BAM header information
         const BamHeader& header = bamFile.Header();
         EXPECT_EQ(std::string("unknown"), header.SortOrder());
-        EXPECT_EQ(tests::PacBioBam_Version,  header.PacBioBamVersion());
         EXPECT_TRUE(header.Sequences().empty());
         EXPECT_TRUE(header.Comments().empty());
         ASSERT_FALSE(header.Programs().empty());
