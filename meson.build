@@ -50,9 +50,16 @@ bax2bam_boost_dep = dependency('boost', required : true)
 bax2bam_libblasr_dep = dependency('libblasr', fallback : ['blasr_libcpp', 'libblasr_dep'])
 
 # zlib
-bax2bam_zlib_dep = dependency('zlib', required : true)
+bax2bam_zlib_dep = dependency('zlib', required : true, fallback : ['zlib', 'zlib_dep'])
 
-bax2bam_deps = [bax2bam_boost_dep, bax2bam_libblasr_dep, bax2bam_zlib_dep]
+# htslib
+bax2bam_htslib_dep = dependency('htslib', required : true, version : '>=1.4', fallback : ['htslib', 'htslib_dep'])
+
+bax2bam_deps = [
+  bax2bam_boost_dep,
+  bax2bam_libblasr_dep,
+  bax2bam_zlib_dep,
+  bax2bam_htslib_dep]
 
 ########################
 # sources + executable #
