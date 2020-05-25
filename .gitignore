@@ -6,7 +6,5 @@ __pycache__/
 *.pyc
 
 # Meson WrapDB stuff
-subprojects/packagecache/
-subprojects/blasr_libcpp*
-subprojects/googletest*
-subprojects/pbbam*
+/subprojects/*
+!/subprojects/*.wrap
