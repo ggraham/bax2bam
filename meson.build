@@ -5,10 +5,10 @@ project(
   default_options : [
     'buildtype=release',
     'warning_level=3',
-    'cpp_std=c++14',
+    'cpp_std=c++17',
     'b_ndebug=false'],
   license : 'BSD-3',
-  meson_version : '>= 0.46.0')
+  meson_version : '>= 0.52.0')
 
 # TODO:
 # try to reenable 'b_ndebug=true'
@@ -44,7 +44,7 @@ endif
 ################
 
 # boost
-bax2bam_boost_dep = dependency('boost', required : true)
+bax2bam_boost_dep = dependency('boost', include_type : 'system', required : true)
 
 # libblasr
 bax2bam_libblasr_dep = dependency('libblasr', fallback : ['blasr_libcpp', 'libblasr_dep'])
