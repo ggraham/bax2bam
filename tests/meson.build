@@ -4,7 +4,11 @@ if not bax2bam_cram_script.found()
   bax2bam_cram_script = find_program('scripts/cram.py', required : true)
 endif
 
-bax2bam_gtest_dep = dependency('gtest_main', fallback : ['gtest', 'gtest_main_dep'])
+# find GoogleTest
+bax2bam_gtest_dep = dependency(
+  'gtest',
+  main : true,
+  fallback : ['gtest', 'gtest_main_dep'])
 
 bax2bam_TestData_h_config = configuration_data()
 bax2bam_TestData_h_config.set('Bax2Bam_BinDir', meson.build_root())
