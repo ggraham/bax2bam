@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
     optparse::OptionParser parser;
     parser.description("bax2bam converts the legacy PacBio basecall format (bax.h5) into the BAM basecall format.");
     parser.prog("bax2bam");
-    parser.version("0.0.8");
+    parser.version("0.0.11");
     parser.add_version_option(true);
     parser.add_help_option(true);
 
